@@ -1,0 +1,6538 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+<!-- Mirrored from smartmatertech.weebly.com/normalized-yield-surface-via-gpu.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Jul 2026 19:08:48 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+		<title>Normalized yield surface via GPU</title><meta property="og:site_name" content="SMART MATERTECH" />
+<meta property="og:title" content="Normalized yield surface via GPU" />
+<meta property="og:description" content="​以下是具体的工作流程和所需工具的详细建议： 1. 编程语言与开发环境 编程语言: C/C++ 结合 CUDA（用于 GPU 编程） 集成开发环境 (IDE): NVIDIA Nsight..." />
+<meta property="og:image" content="../cdn2.editmysite.com/images/site/footer/og-image-placeholder-blank.png" />
+<meta property="og:url" content="normalized-yield-surface-via-gpu.html" />
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		
+		<link id="wsite-base-style" rel="stylesheet" type="text/css" href="../cdn11.editmysite.com/css/sitesf74a.css?buildtime=1782254304" />
+<link rel="stylesheet" type="text/css" href="../cdn11.editmysite.com/css/old/fancyboxf74a.css?buildtime=1782254304" />
+<link rel="stylesheet" type="text/css" href="../cdn11.editmysite.com/css/social-iconsf74a.css?buildtime=1782254304" media="screen,projection" />
+<link rel="stylesheet" type="text/css" href="files/main_style461a.css?1782292017" title="wsite-theme-css" />
+<link href='../cdn2.editmysite.com/fonts/Quattrocento_Sans/fontc81e.css?2' rel='stylesheet' type='text/css' />
+<link href='../cdn2.editmysite.com/fonts/Quattrocento/fontc81e.css?2' rel='stylesheet' type='text/css' />
+
+<link href='../cdn2.editmysite.com/fonts/Open_Sans/fontc81e.css?2' rel='stylesheet' type='text/css' />
+<link href='../cdn2.editmysite.com/fonts/Open_Sans/fontc81e.css?2' rel='stylesheet' type='text/css' />
+<style type='text/css'>
+.wsite-elements.wsite-not-footer:not(.wsite-header-elements) div.paragraph, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) p, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-block .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-description, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, #wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {}
+#wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {}
+.wsite-elements.wsite-footer div.paragraph, .wsite-elements.wsite-footer p, .wsite-elements.wsite-footer .product-block .product-title, .wsite-elements.wsite-footer .product-description, .wsite-elements.wsite-footer .wsite-form-field label, .wsite-elements.wsite-footer .wsite-form-field label{}
+.wsite-elements.wsite-not-footer:not(.wsite-header-elements) h2, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-long .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-large .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-small .product-title, #wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {}
+#wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {}
+.wsite-elements.wsite-footer h2, .wsite-elements.wsite-footer .product-long .product-title, .wsite-elements.wsite-footer .product-large .product-title, .wsite-elements.wsite-footer .product-small .product-title{}
+#wsite-title {font-family:"Open Sans" !important;text-transform:  uppercase !important;}
+.wsite-menu-default a {font-family:"Open Sans" !important;}
+.wsite-menu a {}
+.wsite-image div, .wsite-caption {}
+.galleryCaptionInnerText {}
+.fancybox-title {}
+.wslide-caption-text {}
+.wsite-phone {}
+.wsite-headline,.wsite-header-section .wsite-content-title {}
+.wsite-headline-paragraph,.wsite-header-section .paragraph {}
+.wsite-button-inner {}
+.wsite-not-footer blockquote {}
+.wsite-footer blockquote {}
+.blog-header h2 a {}
+#wsite-content h2.wsite-product-title {}
+.wsite-product .wsite-product-price a {}
+@media screen and (min-width: 767px) {.wsite-elements.wsite-not-footer:not(.wsite-header-elements) div.paragraph, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) p, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-block .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-description, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .wsite-form-field label, #wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {}
+#wsite-content div.paragraph, #wsite-content p, #wsite-content .product-block .product-title, #wsite-content .product-description, #wsite-content .wsite-form-field label, #wsite-content .wsite-form-field label, .blog-sidebar div.paragraph, .blog-sidebar p, .blog-sidebar .wsite-form-field label, .blog-sidebar .wsite-form-field label {}
+.wsite-elements.wsite-footer div.paragraph, .wsite-elements.wsite-footer p, .wsite-elements.wsite-footer .product-block .product-title, .wsite-elements.wsite-footer .product-description, .wsite-elements.wsite-footer .wsite-form-field label, .wsite-elements.wsite-footer .wsite-form-field label{}
+.wsite-elements.wsite-not-footer:not(.wsite-header-elements) h2, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-long .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-large .product-title, .wsite-elements.wsite-not-footer:not(.wsite-header-elements) .product-small .product-title, #wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {}
+#wsite-content h2, #wsite-content .product-long .product-title, #wsite-content .product-large .product-title, #wsite-content .product-small .product-title, .blog-sidebar h2 {}
+.wsite-elements.wsite-footer h2, .wsite-elements.wsite-footer .product-long .product-title, .wsite-elements.wsite-footer .product-large .product-title, .wsite-elements.wsite-footer .product-small .product-title{}
+#wsite-title {font-size:22px !important;}
+.wsite-menu-default a {font-size:13px !important;}
+.wsite-menu a {}
+.wsite-image div, .wsite-caption {}
+.galleryCaptionInnerText {}
+.fancybox-title {}
+.wslide-caption-text {}
+.wsite-phone {}
+.wsite-headline,.wsite-header-section .wsite-content-title {}
+.wsite-headline-paragraph,.wsite-header-section .paragraph {}
+.wsite-button-inner {}
+.wsite-not-footer blockquote {}
+.wsite-footer blockquote {}
+.blog-header h2 a {}
+#wsite-content h2.wsite-product-title {}
+.wsite-product .wsite-product-price a {}
+}</style>
+
+		<script src='files/templateArtifacts461a.js?1782292017'></script>
+<script>
+var STATIC_BASE = 'http://cdn1.editmysite.com/';
+var ASSETS_BASE = 'http://cdn11.editmysite.com/';
+var STYLE_PREFIX = 'wsite';
+</script>
+<script src='../cdn11.editmysite.com/js/jquery-1.8.3.min.js'></script>
+
+<script type="text/javascript" src="../cdn2.editmysite.com/js/lang/en/stl4fd6.js?buildTime=1782254304&amp;"></script>
+<script src="../cdn11.editmysite.com/js/site/mainf74a.js?buildtime=1782254304"></script><script type="text/javascript">
+		function initCustomerAccountsModels() {
+					(function(){_W.setup_rpc({"url":"\/ajax\/api\/JsonRPC\/CustomerAccounts\/","actions":{"CustomerAccounts":[{"name":"login","len":2,"multiple":false,"standalone":false},{"name":"logout","len":0,"multiple":false,"standalone":false},{"name":"getSessionDetails","len":0,"multiple":false,"standalone":false},{"name":"getAccountDetails","len":0,"multiple":false,"standalone":false},{"name":"getOrders","len":0,"multiple":false,"standalone":false},{"name":"register","len":4,"multiple":false,"standalone":false},{"name":"emailExists","len":1,"multiple":false,"standalone":false},{"name":"passwordReset","len":1,"multiple":false,"standalone":false},{"name":"passwordUpdate","len":3,"multiple":false,"standalone":false},{"name":"validateSession","len":1,"multiple":false,"standalone":false}]},"namespace":"_W.CustomerAccounts.RPC"});
+_W.setup_model_rpc({"rpc_namespace":"_W.CustomerAccounts.RPC","model_namespace":"_W.CustomerAccounts.BackboneModelData","collection_namespace":"_W.CustomerAccounts.BackboneCollectionData","bootstrap_namespace":"_W.CustomerAccounts.BackboneBootstrap","models":{"CustomerAccounts":{"_class":"CustomerAccounts.Model.CustomerAccounts","defaults":null,"validation":null,"types":null,"idAttribute":null,"keydefs":null}},"collections":{"CustomerAccounts":{"_class":"CustomerAccounts.Collection.CustomerAccounts"}},"bootstrap":[]});
+})();
+		}
+		if(document.createEvent && document.addEventListener) {
+			var initEvt = document.createEvent('Event');
+			initEvt.initEvent('customerAccountsModelsInitialized', true, false);
+			document.dispatchEvent(initEvt);
+		} else if(document.documentElement.initCustomerAccountsModels === 0){
+			document.documentElement.initCustomerAccountsModels++
+		}
+		</script>
+		<script type="text/javascript"> _W = _W || {}; _W.securePrefix='smartmatertech.weebly.com'; </script><script>_W = _W || {};
+			_W.customerLocale = "zh";
+			_W.storeName = null;
+			_W.isCheckoutReskin = false;
+			_W.storeCountry = "SG";
+			_W.storeCurrency = "SGD";
+			_W.storeEuPrivacyPolicyUrl = "";
+			com_currentSite = "197915658873313714";
+			com_userID = "132868807";</script><script type="text/javascript">_W.configDomain = "www.weebly.com";</script><script>_W.relinquish && _W.relinquish()</script>
+<script type="text/javascript" src="../cdn2.editmysite.com/js/lang/en/stlf06b.js?buildTime=1782335418&amp;"></script><script> _W.themePlugins = [];</script><script type="text/javascript"> _W.recaptchaUrl = "../www.google.com/recaptcha/api.js"; </script><script type="text/javascript"><!--
+	
+	
+	function initFlyouts(){
+		initPublishedFlyoutMenus(
+			[{"id":"449870466210439719","title":"HOME","url":"index.html","target":"","nav_menu":false,"nonclickable":false},{"id":"849579319350263904","title":"SHAPE MEMORY MATERIALS\/TECHNOLOGY","url":"shape-memory-materialstechnology.html","target":"","nav_menu":false,"nonclickable":false},{"id":"597181913359033971","title":"DIY","url":"diy.html","target":"","nav_menu":false,"nonclickable":false},{"id":"905477596168217794","title":"PROJECTS","url":"projects.html","target":"","nav_menu":false,"nonclickable":false},{"id":"134836588838265829","title":"Store room","url":"store-room.html","target":"","nav_menu":false,"nonclickable":false},{"id":"900093232758959107","title":"Contact","url":"contact.html","target":"","nav_menu":false,"nonclickable":false}],
+			"142005085690353108",
+			'',
+			'active',
+			false,
+			{"navigation\/item":"<li {{#id}}id=\"{{id}}\"{{\/id}} class=\"wsite-menu-item-wrap\">\n\t<a\n\t\t{{^nonclickable}}\n\t\t\t{{^nav_menu}}\n\t\t\t\thref=\"{{url}}\"\n\t\t\t{{\/nav_menu}}\n\t\t{{\/nonclickable}}\n\t\t{{#target}}\n\t\t\ttarget=\"{{target}}\"\n\t\t{{\/target}}\n\t\t{{#membership_required}}\n\t\t\tdata-membership-required=\"{{.}}\"\n\t\t{{\/membership_required}}\n\t\tclass=\"wsite-menu-item\"\n\t\t>\n\t\t{{{title_html}}}\n\t<\/a>\n\t{{#has_children}}{{> navigation\/flyout\/list}}{{\/has_children}}\n<\/li>\n","navigation\/flyout\/list":"<div class=\"wsite-menu-wrap\" style=\"display:none\">\n\t<ul class=\"wsite-menu\">\n\t\t{{#children}}{{> navigation\/flyout\/item}}{{\/children}}\n\t<\/ul>\n<\/div>\n","navigation\/flyout\/item":"<li {{#id}}id=\"{{id}}\"{{\/id}}\n\tclass=\"wsite-menu-subitem-wrap {{#is_current}}wsite-nav-current{{\/is_current}}\"\n\t>\n\t<a\n\t\t{{^nonclickable}}\n\t\t\t{{^nav_menu}}\n\t\t\t\thref=\"{{url}}\"\n\t\t\t{{\/nav_menu}}\n\t\t{{\/nonclickable}}\n\t\t{{#target}}\n\t\t\ttarget=\"{{target}}\"\n\t\t{{\/target}}\n\t\tclass=\"wsite-menu-subitem\"\n\t\t>\n\t\t<span class=\"wsite-menu-title\">\n\t\t\t{{{title_html}}}\n\t\t<\/span>{{#has_children}}<span class=\"wsite-menu-arrow\">&gt;<\/span>{{\/has_children}}\n\t<\/a>\n\t{{#has_children}}{{> navigation\/flyout\/list}}{{\/has_children}}\n<\/li>\n"},
+			{}
+		)
+	}
+//-->
+</script>
+		
+		
+	</head>
+	<body class="header-page wsite-theme-light  wsite-page-normalized-yield-surface-via-gpu"><div class="wrapper">
+    <div class="cento-header">
+      <div class="container">
+        <div class="logo"><span class="wsite-logo">
+
+	
+	<span class="wsite-title-placeholder">&nbsp;</span><span style="display:none">
+	<span style="display:none">SMART MATERTECH</span>
+	</span>
+	
+
+</span></div>
+        <a class="hamburger" aria-label="Menu" href="#"><span></span></a>
+      </div>
+      <div class="nav-wrap">
+        <div class="container">
+          <div class="nav desktop-nav"><ul class="wsite-menu-default">
+		<li id="pg449870466210439719" class="wsite-menu-item-wrap">
+			<a
+						href="index.html"
+				class="wsite-menu-item"
+				>
+				HOME
+			</a>
+			
+		</li>
+		<li id="pg849579319350263904" class="wsite-menu-item-wrap">
+			<a
+						href="shape-memory-materialstechnology.html"
+				class="wsite-menu-item"
+				>
+				SHAPE MEMORY MATERIALS/TECHNOLOGY
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-636778014248804638"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-alloys.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory alloys
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-284963986111842283"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-alloy-actuators.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory alloy actuators
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-666108034510102305"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="grains-and-deformation.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Grains and deformation
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-366181443154457709"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-suppliers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA suppliers
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-331834494721630963"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory polymers
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-478514787394009705"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermo-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermo-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-954354717460090066"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="heating-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Heating-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-588476759748868504"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermo-plastic-elastic-smp.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermo-plastic elastic SMP
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-634190776533565694"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="bodyroom-temperature-programmable.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Body/room temperature programmable
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-175600180855754956"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermoset-elastic-smp.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermoset elastic SMP
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-973281143736383059"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="bodyroom-temperature-programmable1.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Body/room temperature programmable
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-785305065765267823"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="tailoring-tg-of-polymers-via-alloying.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Tailoring Tg of polymers via alloying
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-798447994981628324"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="vitrimer.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Vitrimer
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-343798175539253577"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-printing-filaments.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D printing filaments
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-668913285814792942"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="show-time.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Show time
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-987130405377422055"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="body-temperature-programmable-elastic-shape-memory-materials-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Body-temperature programmable elastic  shape memory materials: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-264385475993067983"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cooling-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cooling-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-169201366263144092"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cooling-responsive-shape-memory-materials-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cooling-responsive shape memory materials: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-257468102639285427"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="chemo-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Chemo-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-671213331239259311"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electrospinning-fundametals.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electrospinning: fundametals
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-971105054282663045"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="natural-biopolymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Natural biopolymers
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-524357891349573879"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="water-responsive-sme-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Water-responsive SME: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-835695192983465369"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="hydrogel.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Hydrogel
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-889670495929504579"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="simulation-of-smp.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Simulation of SMP
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-231128199613346396"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-hybrids.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory hybrids
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-948720437995196998"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electro-activated-shape-memory-hybrid.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electro-activated shape memory hybrid
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-777106737389404397"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smhs-tailorable-properties.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMHs: tailorable properties
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-876459703611221563"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-hybrids-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory hybrids: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-292241229946229685"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="triplemultiple-sme.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Triple/multiple SME
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-809827554673947105"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="reversibleshape-change-effect.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Reversible/shape change effect
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-156039188269901687"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="programming-conditions.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Programming conditions
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-627079661619783517"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temperature-memory-effect-in-dsc.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temperature memory effect in DSC
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-922363620841205688"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-2283331283.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling &#22833;&#31283;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-285983556570571219"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="constrained-recovery-of-2way-eva.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Constrained recovery of 2way EVA
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-126596885443227297"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-structures.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory structures
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-626983806567433552"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-composites.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory composites
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-448292600980290953"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="intro--refs.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Intro. & Refs.
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-987006278987596442"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sme-in-commercial-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SME in commercial polymers
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-560286944265042028"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smm-introduction-videos.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMM introduction videos
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-578285265970614228"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="pmma-acrylic.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			PMMA (acrylic)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg597181913359033971" class="wsite-menu-item-wrap">
+			<a
+						href="diy.html"
+				class="wsite-menu-item"
+				>
+				DIY
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-527596941676381330"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="laser-engraving-and-beyond.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Laser engraving and beyond
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-860153969420888811"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-step-by-step-to-protect-power-charge-cable-33258210462080530005324472550922836204452525223618.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY (step-by-step) to protect power charge cable &#33258;&#21046;&#20805;&#30005;&#32447;&#25509;&#22836;&#20445;&#25252;&#23618;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-944091623596158059"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-smp-screw-3325821046244182936635760245183474619997.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY SMP screw &#33258;&#21046;&#24418;&#29366;&#35760;&#24518;&#34746;&#19997;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-706753736962268368"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-shape-memory-foam-3325821046244182936635760245182802332501.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY shape memory foam &#33258;&#21046;&#24418;&#29366;&#35760;&#24518;&#28023;&#32501;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-820922335898507144"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-shape-memory-shoes-33258210462441829366357602451838795.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY shape memory shoes &#33258;&#21046;&#24418;&#29366;&#35760;&#24518;&#38795;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-405238764391444203"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="modifying-superelastic-nitinol-36229243773822138043357602451821512373292591324615.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Modifying superelastic Nitinol &#36229;&#24377;&#38221;&#38043;&#35760;&#24518;&#21512;&#37329;&#25913;&#24615;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-742139220391223378"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="goggles.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Goggles
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-755639057884157425"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temple-tip-retainers-3052438236384502836938057.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temple Tip Retainers /&#30524;&#38236;&#38450;&#28369;&#38057;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-380636120858396871"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="nose-pads.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Nose pads
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-551975068671014496"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3078933014tpu26679216972104620316-25605252922796931243.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#30789;&#33014;+TPU&#26679;&#21697;&#21046;&#20316; &#25605;&#25292;&#27969;&#31243;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-384816627465424729"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="unlock-smart-phones.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Unlock smart phones
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg905477596168217794" class="wsite-menu-item-wrap">
+			<a
+						href="projects.html"
+				class="wsite-menu-item"
+				>
+				PROJECTS
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-304242588504655296"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="biomedical-applications-299832928921307301032421229992.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Biomedical applications &#29983;&#29289;&#21307;&#30103;&#24212;&#29992;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-883813194524576820"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="self-tightening-band-aid-332582591032553210192148736148.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Self-tightening band aid &#33258;&#25910;&#32553;&#21019;&#21487;&#36148;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-227417600699441394"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="self-tightening-staple-332582591032553251632641538025.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Self-tightening staple &#33258;&#25910;&#32553;&#25163;&#26415;&#38025;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-246241835835523591"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-plug-244182936635760245182664322622.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory plug &#24418;&#29366;&#35760;&#24518;&#26643;&#22622;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-430121251711814284"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="artificial-blood-vessels.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Artificial blood vessels
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-867925347295269103"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="comfort-fitting-33298368663614821512.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Comfort fitting &#33298;&#36866;&#36148;&#21512;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-168162378549856514"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-shoes-2441829366357602451838795.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory shoes &#24418;&#29366;&#35760;&#24518;&#38795;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-514931642674959454"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="wrist-ringsrings.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Wrist rings/rings
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-864091875704665279"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="mask2147532617.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Mask&#21475;&#32617;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-141425891586747902"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="masks.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY&#21475;&#32617;&#25187;&#26494;&#32039;&#22120;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-979642921180142211"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="mask-holder-21475326172590326550.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Mask holder &#21475;&#32617;&#25903;&#26550;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-374329891937311787"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="improved-fitting.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Improved fitting
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-112111887739734774"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="comfort-fitting-invisible-mask-33298368663614821512ldquo3854424418rdquo2147532617.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Comfort fitting "invisible" mask &#33298;&#36866;&#36148;&#21512;&ldquo;&#38544;&#24418;&rdquo;&#21475;&#32617;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-936055033467548548"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="animation-mask.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Animation (mask)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-195227067897995665"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="facial-mask-3875433180.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Facial mask (&#38754;&#33180;)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-831426834629359780"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="retractable-214872591022238.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Retractable &#21487;&#25910;&#22238;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-351514075839875472"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="wrinkle-removal-3850030385.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Wrinkle removal &#38500;&#30385;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-420989349896421333"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-devices-2441829366357602451821512373292212020214.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA devices &#24418;&#29366;&#35760;&#24518;&#21512;&#37329;&#22120;&#20214;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-340130513783389091"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buttons-on-demand-25353386562535338062.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buttons-on-demand &#25353;&#38656;&#25353;&#38062;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-944873172711974997"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sunlight-activated-heat-engine-38451208093953721160303402890926426.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Sunlight activated heat engine &#38451;&#20809;&#39537;&#21160;&#30340;&#28909;&#26426;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-802335581616133982"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="adjustable-high-heel-2148735843396403631938795.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Adjustable high heel &#21487;&#35843;&#39640;&#36319;&#38795;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-787237745772087164"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-inchworm-244182936635760245182151237329395372116030340314813341034411.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA inchworm &#24418;&#29366;&#35760;&#24518;&#21512;&#37329;&#39537;&#21160;&#30340;&#31481;&#33410;&#34411;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-738299035489176652"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rolling-car-283782116036710.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rolling car &#28378;&#21160;&#36710;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-731667503319907328"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-springs.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA springs
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-924567960309988257"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="gripper.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Gripper
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-377333952413216020"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smp-applications.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMP applications
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-581669761885172519"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="4d-latte-art-4d-2528933457.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			4D latte art 4D &#25289;&#33457;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-853353909168342763"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="spinning-4d-latte-art.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Spinning 4D latte art
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-974353445276797484"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="re-writable-braille-paper-214872279720889304502599132440.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Re-writable Braille paper &#21487;&#22797;&#20889;&#30450;&#25991;&#32440;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-265890106193466523"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="surface-patterning.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Surface patterning
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-303098827313748714"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2d-to-3d-switching.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			2D to 3D switching
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-654154230826564255"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="ear-impressionplugs.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Ear impression/plugs
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-994819428351833141"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="metalspolymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Metals/polymers
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-614593893216753202"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smart-manufacturing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Smart manufacturing
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-261959526802268474"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="powerless-cooling.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Powerless cooling
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-448620004911318707"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="self-healing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Self-healing
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-629950268110806877"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sensors-202562486322120.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Sensors &#20256;&#24863;&#22120;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-705488241139197509"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temperature-sensors-28201242302663131614.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temperature sensors &#28201;&#24230;&#26631;&#31614;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-712808546701391754"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="anti-counterfeit-labels-38450202662663131614.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Anti-counterfeit labels &#38450;&#20266;&#26631;&#31614;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-573402516754560501"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="vertical-gardening-22402304523251121270.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Vertical gardening &#22402;&#30452;&#32511;&#21270;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-588054799182210659"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3040626223.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#30406;&#26223;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-216119165178487149"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="in-singapore.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			In Singapore
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-634512522469466443"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="products-2013521697.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Products &#20135;&#21697;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-409412151854649899"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="event-sponsorship.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Event sponsorship
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-487999008753374962"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="projects-3903330446.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Projects &#39033;&#30446;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-551402185860307880"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="a-project-in-guangzhou-2022.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			A project in Guangzhou (2022)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-832702093763625066"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2nd-project-in-guangzhou.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			2nd Project in Guangzhou
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-681613229486593582"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3rd-project-in-singapore.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3rd Project in Singapore
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-521328682846956824"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="water-on-demand-irrigation-system.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Water on-demand irrigation system
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-653239302185951962"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="vertical-greening-panel-2nd-type.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Vertical greening panel (2nd  type)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-880902895719628915"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2nd-type-of-foam.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			2nd type of foam
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-443184929408436011"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="wearable-electronics-21487313592514030005233763577422791.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Wearable electronics &#21487;&#31359;&#25140;&#30005;&#23376;&#35774;&#22791;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-123713723555076966"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="controlled-foldingunfolding-214872551123637243202524021472.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Controlled folding/unfolding &#21487;&#25511;&#23637;&#24320;/&#25240;&#21472;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-803729650569336337"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="folding-multiple-layered.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Folding (multiple layered)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-564956297185976547"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="reshape--reprogram.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Reshape & reprogram
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-686763808145800170"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="active-disassembly-332582528621368.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Active disassembly &#33258;&#25286;&#21368;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-273148082873136511"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="morphing-wing-2146432764.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Morphing wing &#21464;&#32764;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-284547570604623005"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="magnetic-circuit-design.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Magnetic circuit design
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-374983956745212360"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="solid-state-uv-cross-linking.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Solid state UV cross-linking
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-223008639596616722"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="solid-state-heating-cross-linking.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Solid-state heating cross-linking
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-898488440914965671"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="additive-manufacturing22686264482104636896.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Additive manufacturing&#22686;&#26448;&#21046;&#36896;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-976272274955595130"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d4d-printing-2517121360.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D/4D printing &#25171;&#21360;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-757668363656147762"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-3d-printing-in-solid-state-245553689522266245773d2517121360.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid 3D printing in solid state &#24555;&#36895;&#22266;&#24577;3D&#25171;&#21360;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-809767352973135678"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-volumetric-additive-manufacturing-in-solid-state65306-hydrogels.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid volumetric additive manufacturing in solid-state&#65306; hydrogels
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-451489972979511148"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linkable-vitrimer-2022.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linkable vitrimer 2022
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-298954349555723963"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linking-of-solid-material.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linking of solid material
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-152510521756125101"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linking-machine.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linking machine
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-261103592859125077"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="solid-state-vam-3d.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Solid-state VAM (3D)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-116611698916113117"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="svam-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SVAM:  A brief history
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-442196096157996920"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="review-of-solid-state-vam-by-ai.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Review of Solid state VAM by AI
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-168998303577389050"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="new-ways-of-additive-manufacturing-animation.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			New ways of additive manufacturing (animation)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-656945244537326985"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-fdm-printer.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV-FDM printer
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-886900143600626948"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cooling-responsive-shape-memory-hydrogel-via-fdm.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cooling-responsive shape memory hydrogel via FDM
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-207493672265228394"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-fashion.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D fashion
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-982770733237387639"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="formation-of-3d-structures.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Formation of 3D structures
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-224480458647150380"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-capture.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape capture
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-252154092455758988"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="surface-capture.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Surface capture
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-868592342608232633"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="surface-pattern-for-structural-coloring.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Surface pattern for structural coloring
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg134836588838265829" class="wsite-menu-item-wrap">
+			<a
+						href="store-room.html"
+				class="wsite-menu-item"
+				>
+				Store room
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-858789820461719120"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="referencestools.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			References/tools
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-103320468445582043"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-models.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D models
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-825798297409183564"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="more-stl-models.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			More STL models
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-168503569214390405"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2998332918.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#29983;&#32918;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-343343108737566313"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-printing-service.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D printing service
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-106713231755067078"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sample-dimensions-for-tensile-test.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Sample dimensions for tensile test
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-752984144632456828"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temperature-calibration.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temperature calibration
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-256078296244145410"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="toolbox240372085531665.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Toolbox&#24037;&#20855;&#31665;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-610722641630624900"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="toolbox-ii-240372085531665-ii.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Toolbox II (&#24037;&#20855;&#31665; II)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-799631477237907999"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="jungle.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Jungle
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-491333550721590998"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="about-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			About polymers
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-974986216718016368"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermally-reversible-solid-liquid-transition.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermally reversible solid-liquid transition
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-570509880120857551"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cyclic-loading.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cyclic loading
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-186240065405896186"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="mullins-effect.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Mullins effect
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-992214292838354314"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="photoelsticity-2080924377.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Photoelsticity &#20809;&#24377;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-524048230442851036"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shear-thickening-21098209992268624378.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shear-thickening &#21098;&#20999;&#22686;&#24378;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-538933236151395833"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="4-cna.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			4 CNA
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-835102489806517515"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="closed-to-open-cell-foams.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Closed to open cell foams
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-973039087337601937"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="laser-induced-graphene.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Laser induced graphene
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-712216776322434672"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electrospinning.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electrospinning
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-985282461424143214"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="nano-imprinting.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Nano imprinting
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-670735740458364718"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="gel-2095733014.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Gel &#20957;&#33014;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-491747867963333280"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="instability-in-wetting-of-hydrogel.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Instability in wetting of hydrogel
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-954479974603325264"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electroactive-gel3000527963246152095733014.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electroactive gel&#30005;&#27963;&#24615;&#20957;&#33014;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-795106927514728668"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cellulose-324203250032032.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cellulose &#32420;&#32500;&#32032;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-226836923179139426"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="plastic-bottle-226092600929942.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Plastic bottle &#22609;&#26009;&#29942;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-419674373233591697"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="polymer-recycling.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Polymer recycling
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-989388896466067076"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-swelling-24555368952834232960.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid swelling &#24555;&#36895;&#28342;&#32960;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-883895016381569950"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-hardening-in-water.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid hardening in water
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-272835629534772539"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="patterns.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Patterns
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-313081855536692197"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="brittle-ductile-transition.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Brittle-ductile transition
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-437702495940520658"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="tan-delta.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Tan delta
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-791359333861988292"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="re-programmable-tan-delta.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Re-programmable Tan delta
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-151824619440743355"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linking.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linking
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-377560900382998885"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="hardening-speed.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Hardening speed
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-269974038883525086"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="coloring-2146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Coloring &#21464;&#33394;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-470341691571458044"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="structural-coloring-atop-curved-surfaces.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Structural coloring atop curved surfaces
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-974113225158396504"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermochromic-28909332682146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermochromic &#28909;&#33268;&#21464;&#33394;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-996646054692657488"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="photochromic-20809332682146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Photochromic &#20809;&#33268;&#21464;&#33394;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-353021230639483746"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="stress-induced-color-change21147332682146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Stress induced color change&#21147;&#33268;&#21464;&#33394;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-796083894786788998"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="patterned-coloring-via-stretching-25289209863339424425.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Patterned coloring via stretching &#25289;&#20986;&#33394;&#24425;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-258062261902137342"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="moire-interference-33707235722417828041.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Moire interference &#33707;&#23572;&#24178;&#28041;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-511338014904344457"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="lenticular-lens.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Lenticular lens
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-503973700143411117"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="transformation-front.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Transformation front
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-486212339431175107"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="contact-angle-vs-surface-pattern.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Contact angle vs surface pattern
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-988006596135966298"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="laser-applications.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Laser: applications
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-842070465693894657"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="insects-2611834411.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Insects &#26118;&#34411;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-122402754704192755"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="structural-engineer.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Structural engineer
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-741707537175889897"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="static-and-dynamic-balancing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Static and Dynamic Balancing
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-909662343258871823"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="introduction-videos.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Introduction videos
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-392200249300363352"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="bistable-structures-a-case-study.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Bistable structures: a case study
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-916962112288326183"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-printing-of-bistable-structures.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D printing of bistable structures
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-650731246618286502"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="step-wise-morphing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Step-wise morphing
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-913064827673443671"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="yield-criterion.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Yield criterion
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-142005085690353108"
+	class="wsite-menu-subitem-wrap wsite-nav-current"
+	>
+	<a
+				href="normalized-yield-surface-via-gpu.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Normalized yield surface via GPU
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-408053281155710808"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="yield-surface-of-smas-and-beyond.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Yield surface of SMAs and beyond
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-210862578101799006"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-of-embedded-threads.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling of embedded threads
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-914069112181455939"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-of-embedded-strip.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling of embedded strip
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-775575235398015480"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-of-strip-atop-soft-substrate.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling of strip atop soft substrate
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-607750002340038244"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="foam-structures-for-packaging.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Foam structures for packaging
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-650064103911872925"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="interesting.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Interesting
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-592729747590805459"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="exhibition.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Exhibition
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-461168690834514631"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="ideas.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Ideas
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-814268793491774951"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="experimental.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Experimental
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-882976523997023183"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="tensile-test.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Tensile test
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-264844369237853093"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="differential-scanning-calorimetry-dsc-procedure.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Differential Scanning Calorimetry (DSC) Procedure
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-568601293937157987"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="dynamic-mechanical-analysis-dma-procedure.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Dynamic Mechanical Analysis (DMA) Procedure
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-245804282436636780"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-performance-characterization-procedure-for-shape-memory-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape Memory Performance Characterization Procedure for Shape Memory Polymers
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-213179220569011600"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="chatgpt-4-fun.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			ChatGPT 4 fun
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-755865658708699279"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="26234358892797935797.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#26234;&#35889;&#27979;&#35797;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg900093232758959107" class="wsite-menu-item-wrap">
+			<a
+						href="contact.html"
+				class="wsite-menu-item"
+				>
+				Contact
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-590797855308385995"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smm-course.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMM course
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-680749485510310162"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="representative-publications.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Representative publications
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-818781976891300342"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="projects-of-undergraduate-students.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Projects of undergraduate students
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-342823459871987752"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="list-of-videos.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			List of videos
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-474937000648180370"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="special-issues-conferences.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Special issues| Conferences
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-761016290835088930"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="companies.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Companies
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-185694089759685491"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="references.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			References
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+		</li>
+</ul>
+</div>
+        </div><!-- end .container -->
+      </div><!-- end .nav-wrap -->
+    </div><!-- end .header -->
+
+    <div class="banner-wrap">
+      <div class="wsite-elements wsite-not-footer wsite-header-elements">
+	<div class="wsite-section-wrap">
+	<div  class="wsite-section wsite-header-section wsite-section-bg-image" style="background-image: url(_/uploads/1/3/2/8/132868807/background-images/9385705.html) ;background-repeat: no-repeat ;background-position: 34.28% 41.13% ;background-size: 100% ;background-color: transparent ;background-size: cover;" >
+		<div class="wsite-section-content">
+			
+        <div class="container">
+          <div class="banner">
+				<div class="wsite-section-elements">
+					<h2 class="wsite-content-title">&#8203;Normalized yield surface via GPU</h2>
+				</div>
+			</div>
+        </div><!-- end container -->
+      
+		</div>
+		<div class=""></div>
+	</div>
+</div>
+
+</div>
+
+    </div><!-- end banner-wrap -->
+
+    <div class="content-wrap">
+      <div id="wsite-content" class="wsite-elements wsite-not-footer">
+	<div class="wsite-section-wrap">
+	<div class="wsite-section wsite-body-section wsite-background-206"  >
+		<div class="wsite-section-content">
+        <div class="container">
+			<div class="wsite-section-elements">
+				<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:13.473684210526%; padding:0 15px;">
+					
+						
+
+<h2 class="wsite-content-title">20260624 via Gemini</h2>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:86.526315789474%; padding:0 15px;">
+					
+						
+
+<div class="wsite-scribd">			
+
+			
+				<div id="863266819473468044-pdf-fallback" style="display: none;">
+					Your browser does not support viewing this document. Click <a href="uploads/1/3/2/8/132868807/20260324a_gpu_yield_surface.pdf" target="_blank" rel="noopener noreferrer">here</a> to download the document.
+				</div>
+				<div id="863266819473468044-pdf-embed" style="display: none; height: 500px;">
+				</div>
+
+				<script type="text/javascript">
+					(function () {
+						if (window.wpdf && window.wpdf.supportsPDFs && window.wpdf.isPDF('uploads/1/3/2/8/132868807/20260324a_gpu_yield_surface.pdf')) {
+							var embed = document.getElementById('863266819473468044-pdf-embed');
+							embed.style.display = 'block';
+							window.wpdf.embed('uploads/1/3/2/8/132868807/20260324a_gpu_yield_surface.pdf', embed);
+						} else {
+							var fallback = document.getElementById('863266819473468044-pdf-fallback');
+							fallback.style.display = 'block';
+						}
+					})();
+				</script>
+			</div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<h2 class="wsite-content-title">Deepseek</h2>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div><div style="height: 20px; overflow: hidden; width: 100%;"></div>
+<hr class="styled-hr" style="width:100%;"></hr>
+<div style="height: 20px; overflow: hidden; width: 100%;"></div></div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div class="paragraph">&#35201;&#23454;&#29616;&#35745;&#31639;&#24212;&#21147;&#35825;&#23548;&#39532;&#27663;&#20307;&#30456;&#21464;&#30340;&#21151;&#24182;&#32472;&#21046;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;&#65292;&#38656;&#35201;&#32467;&#21512;&#36719;&#20214;&#24037;&#20855;&#12289;&#30828;&#20214;&#35774;&#22791;&#21644;&#32534;&#31243;&#29615;&#22659;&#12290;&#20197;&#19979;&#26159;&#20855;&#20307;&#30340;&#23454;&#29616;&#27493;&#39588;&#21644;&#25152;&#38656;&#36164;&#28304;&#65306;<br /><span></span><br />1.&nbsp;<strong>&#30828;&#20214;&#38656;&#27714;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>GPU&#35774;&#22791;</strong>&#65306;<br /><span></span><ul><li>&#25512;&#33616;&#20351;&#29992;NVIDIA GPU&#65288;&#22914;Tesla&#12289;A100&#12289;RTX&#31995;&#21015;&#65289;&#65292;&#25903;&#25345;CUDA&#32534;&#31243;&#12290;<br /><span></span></li><li>GPU&#26174;&#23384;&#33267;&#23569;8GB&#65292;&#20197;&#22788;&#29702;&#22823;&#35268;&#27169;&#26230;&#20307;&#25968;&#25454;&#12290;<br /><span></span></li></ul></li><li><strong>CPU&#21644;&#20869;&#23384;</strong>&#65306;<br /><span></span><ul><li>&#22810;&#26680;CPU&#65288;&#22914;Intel Xeon&#25110;AMD Ryzen&#65289;&#12290;<br /><span></span></li><li>&#20869;&#23384;&#33267;&#23569;32GB&#65292;&#29992;&#20110;&#39044;&#22788;&#29702;&#21644;&#21518;&#22788;&#29702;&#25968;&#25454;&#12290;<br /><span></span></li></ul></li><li><strong>&#23384;&#20648;</strong>&#65306;<br /><span></span><ul><li>&#39640;&#36895;SSD&#65292;&#29992;&#20110;&#23384;&#20648;&#26230;&#20307;&#25968;&#25454;&#21644;&#35745;&#31639;&#32467;&#26524;&#12290;<br /><span></span></li></ul></li></ul><br />2.&nbsp;<strong>&#36719;&#20214;&#24037;&#20855;</strong><strong>&#32534;&#31243;&#35821;&#35328;&#21644;&#26694;&#26550;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>CUDA</strong>&#65306;&#29992;&#20110;&#32534;&#20889;GPU&#26680;&#20989;&#25968;&#65292;&#23454;&#29616;&#24182;&#34892;&#35745;&#31639;&#12290;<br /><span></span></li><li><strong>C/C++</strong>&#65306;&#29992;&#20110;&#32534;&#20889;&#20027;&#31243;&#24207;&#21644;&#35843;&#29992;CUDA&#26680;&#20989;&#25968;&#12290;<br /><span></span></li><li><strong>Python</strong>&#65306;&#29992;&#20110;&#25968;&#25454;&#39044;&#22788;&#29702;&#12289;&#21518;&#22788;&#29702;&#21644;&#21487;&#35270;&#21270;&#12290;<br /><span></span></li></ul><strong>&#24320;&#21457;&#29615;&#22659;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>CUDA Toolkit</strong>&#65306;&#23433;&#35013;NVIDIA CUDA Toolkit&#65288;&#26368;&#26032;&#29256;&#26412;&#65289;&#65292;&#21253;&#21547;&#32534;&#35793;&#22120;&#12289;&#24211;&#21644;&#35843;&#35797;&#24037;&#20855;&#12290;<br /><span></span></li><li><strong>IDE</strong>&#65306;<br /><span></span><ul><li>Visual Studio&#65288;Windows&#65289;&#25110; VSCode&#65288;&#36328;&#24179;&#21488;&#65289;&#65306;&#29992;&#20110;&#32534;&#20889;&#21644;&#35843;&#35797;C/C++&#21644;CUDA&#20195;&#30721;&#12290;<br /><span></span></li><li>Jupyter Notebook&#65306;&#29992;&#20110;Python&#33050;&#26412;&#30340;&#20132;&#20114;&#24335;&#24320;&#21457;&#21644;&#21487;&#35270;&#21270;&#12290;<br /><span></span></li></ul></li></ul><strong>&#25968;&#23398;&#24211;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>cuBLAS</strong>&#65306;CUDA&#25552;&#20379;&#30340;&#32447;&#24615;&#20195;&#25968;&#24211;&#65292;&#29992;&#20110;&#21152;&#36895;&#30697;&#38453;&#21644;&#21521;&#37327;&#36816;&#31639;&#12290;<br /><span></span></li><li><strong>NumPy</strong>&nbsp;&#21644;&nbsp;<strong>SciPy</strong>&#65306;Python&#20013;&#30340;&#31185;&#23398;&#35745;&#31639;&#24211;&#65292;&#29992;&#20110;&#25968;&#25454;&#39044;&#22788;&#29702;&#21644;&#21518;&#22788;&#29702;&#12290;<br /><span></span></li></ul><strong>&#21487;&#35270;&#21270;&#24037;&#20855;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>Matplotlib</strong>&#65306;Python&#24211;&#65292;&#29992;&#20110;&#32472;&#21046;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;&#12290;<br /><span></span></li><li><strong>Paraview</strong>&#65306;&#29992;&#20110;3D&#24212;&#21147;&#29366;&#24577;&#21644;&#23624;&#26381;&#38754;&#30340;&#39640;&#32423;&#21487;&#35270;&#21270;&#12290;<br /><span></span></li></ul><br />3.&nbsp;<strong>&#23454;&#29616;&#27493;&#39588;</strong><strong>&#27493;&#39588; 1&#65306;&#20934;&#22791;&#25968;&#25454;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>&#26230;&#20307;&#25968;&#25454;</strong>&#65306;<br /><span></span><ul><li>&#20351;&#29992;&#26448;&#26009;&#27169;&#25311;&#36719;&#20214;&#65288;&#22914;ABAQUS&#12289;ANSYS&#65289;&#29983;&#25104;&#26230;&#20307;&#21462;&#21521;&#25968;&#25454;&#65292;&#25110;&#20174;&#23454;&#39564;&#25968;&#25454;&#20013;&#25552;&#21462;&#12290;<br /><span></span></li><li>&#23558;&#26230;&#20307;&#25968;&#25454;&#23384;&#20648;&#20026;&#25991;&#26412;&#25991;&#20214;&#25110;&#20108;&#36827;&#21046;&#25991;&#20214;&#65288;&#22914;CSV&#12289;HDF5&#26684;&#24335;&#65289;&#12290;<br /><span></span></li></ul></li><li><strong>&#24212;&#21147;&#29366;&#24577;</strong>&#65306;<br /><span></span><ul><li>&#23450;&#20041;&#22810;&#20010;&#21333;&#20301;&#24212;&#21147;&#21521;&#37327;&#65288;&#22914;&#21333;&#21521;&#25289;&#20280;&#12289;&#21098;&#20999;&#31561;&#65289;&#65292;&#23384;&#20648;&#20026;&#25968;&#32452;&#12290;<br /><span></span></li></ul></li></ul><strong>&#27493;&#39588; 2&#65306;&#32534;&#20889;CUDA&#31243;&#24207;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>&#26680;&#20989;&#25968;</strong>&#65306;<br /><span></span><ul><li>&#32534;&#20889;CUDA&#26680;&#20989;&#25968;&#65292;&#35745;&#31639;&#27599;&#20010;&#26230;&#20307;&#22312;&#32473;&#23450;&#24212;&#21147;&#29366;&#24577;&#19979;&#30340;&#21151;&#12290;<br /><span></span></li><li>&#20351;&#29992;&#20849;&#20139;&#20869;&#23384;&#21644;&#32447;&#31243;&#21516;&#27493;&#20248;&#21270;&#24615;&#33021;&#12290;<br /><span></span></li></ul></li><li><strong>&#20027;&#31243;&#24207;</strong>&#65306;<br /><span></span><ul><li>&#35843;&#29992;&#26680;&#20989;&#25968;&#65292;&#35745;&#31639;&#25152;&#26377;&#24212;&#21147;&#29366;&#24577;&#30340;&#24179;&#22343;&#21151;&#12290;<br /><span></span></li><li>&#23454;&#29616;&#24402;&#19968;&#21270;&#35745;&#31639;&#65288;&#38500;&#20197;&#21333;&#21521;&#25289;&#20280;&#30340;&#24179;&#22343;&#21151;&#65289;&#12290;<br /><span></span></li></ul></li></ul><strong>&#27493;&#39588; 3&#65306;&#36816;&#34892;&#31243;&#24207;</strong><ul style="color:rgb(64, 64, 64)"><li>&#22312;&#25903;&#25345;CUDA&#30340;GPU&#26426;&#22120;&#19978;&#32534;&#35793;&#21644;&#36816;&#34892;&#31243;&#24207;&#12290;<br /><span></span></li><li>&#20351;&#29992;CUDA Profiler&#65288;&#22914;nvprof&#65289;&#20998;&#26512;&#24615;&#33021;&#65292;&#20248;&#21270;&#26680;&#20989;&#25968;&#12290;<br /><span></span></li></ul><strong>&#27493;&#39588; 4&#65306;&#25968;&#25454;&#21518;&#22788;&#29702;</strong><ul style="color:rgb(64, 64, 64)"><li>&#23558;&#35745;&#31639;&#32467;&#26524;&#20445;&#23384;&#20026;&#25991;&#20214;&#65288;&#22914;CSV&#25110;HDF5&#26684;&#24335;&#65289;&#12290;<br /><span></span></li><li>&#20351;&#29992;Python&#33050;&#26412;&#35835;&#21462;&#25968;&#25454;&#24182;&#32472;&#21046;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;&#12290;<br /><span></span></li></ul><br />4.&nbsp;<strong>&#20855;&#20307;&#24037;&#20855;&#21644;&#36164;&#28304;</strong><strong>&#36719;&#20214;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>CUDA Toolkit</strong>&#65306;&#20174;<a href="https://developer.nvidia.com/cuda-toolkit" target="_blank">NVIDIA&#23448;&#32593;</a>&#19979;&#36733;&#24182;&#23433;&#35013;&#12290;<br /><span></span></li><li><strong>Python</strong>&#65306;&#20174;<a href="https://www.python.org/" target="_blank">Python&#23448;&#32593;</a>&#19979;&#36733;&#24182;&#23433;&#35013;&#12290;<br /><span></span></li><li><strong>Matplotlib</strong>&#65306;&#36890;&#36807;pip install matplotlib&#23433;&#35013;&#12290;<br /><span></span></li><li><strong>Paraview</strong>&#65306;&#20174;<a href="https://www.paraview.org/" target="_blank">Paraview&#23448;&#32593;</a>&#19979;&#36733;&#24182;&#23433;&#35013;&#12290;<br /><span></span></li></ul><strong>&#30828;&#20214;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>NVIDIA GPU</strong>&#65306;&#30830;&#20445;GPU&#25903;&#25345;CUDA&#65288;&#26597;&#30475;<a href="https://developer.nvidia.com/cuda-gpus" target="_blank">NVIDIA CUDA GPU&#21015;&#34920;</a>&#65289;&#12290;<br /><span></span></li><li><strong>&#39640;&#24615;&#33021;&#35745;&#31639;&#38598;&#32676;</strong>&#65288;&#21487;&#36873;&#65289;&#65306;&#22914;&#26524;&#38656;&#35201;&#22788;&#29702;&#36229;&#22823;&#35268;&#27169;&#25968;&#25454;&#65292;&#21487;&#20197;&#20351;&#29992;&#38598;&#32676;&#65288;&#22914;AWS EC2 GPU&#23454;&#20363;&#25110;&#26412;&#22320;HPC&#38598;&#32676;&#65289;&#12290;<br /><span></span></li></ul><strong>&#23398;&#20064;&#36164;&#28304;</strong><ul style="color:rgb(64, 64, 64)"><li><strong>CUDA&#32534;&#31243;&#25351;&#21335;</strong>&#65306;<a href="https://docs.nvidia.com/cuda/" target="_blank">NVIDIA CUDA&#25991;&#26723;</a>&#12290;<br /><span></span></li><li><strong>Python&#31185;&#23398;&#35745;&#31639;</strong>&#65306;<a href="https://numpy.org/doc/stable/user/quickstart.html" target="_blank">NumPy&#25945;&#31243;</a>&#21644;<a href="https://matplotlib.org/stable/tutorials/index.html" target="_blank">Matplotlib&#25945;&#31243;</a>&#12290;<br /><span></span></li><li><strong>&#26448;&#26009;&#27169;&#25311;&#22522;&#30784;</strong>&#65306;&#21442;&#32771;&#26448;&#26009;&#31185;&#23398;&#25945;&#26448;&#25110;&#22312;&#32447;&#35838;&#31243;&#65288;&#22914;Coursera&#19978;&#30340;&#26448;&#26009;&#31185;&#23398;&#35838;&#31243;&#65289;&#12290;<br /><span></span></li></ul><br />5.&nbsp;<strong>&#31034;&#20363;&#27969;&#31243;</strong><strong>&#25968;&#25454;&#20934;&#22791;</strong><ol style="color:rgb(64, 64, 64)"><li>&#20351;&#29992;Python&#29983;&#25104;&#26230;&#20307;&#21462;&#21521;&#25968;&#25454;&#65306;<br /><span></span>python<br />Copy<br /><span style="color:rgb(129, 161, 193)">import</span> numpy <span style="color:rgb(129, 161, 193)">as</span> np
+m <span style="color:rgb(129, 161, 193)">=</span> <span style="color:rgb(180, 142, 173)">1000</span>  <span style="color:rgb(99, 111, 136)"># &#26230;&#20307;&#25968;</span>
+n <span style="color:rgb(129, 161, 193)">=</span> <span style="color:rgb(180, 142, 173)">24</span>    <span style="color:rgb(99, 111, 136)"># &#39532;&#27663;&#20307;&#21464;&#20307;&#25968;</span>
+crystals <span style="color:rgb(129, 161, 193)">=</span> np<span style="color:rgb(129, 161, 193)">.</span>random<span style="color:rgb(129, 161, 193)">.</span>rand<span style="color:rgb(129, 161, 193)">(</span>m<span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">3</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">3</span><span style="color:rgb(129, 161, 193)">)</span>  <span style="color:rgb(99, 111, 136)"># &#38543;&#26426;&#29983;&#25104;&#26230;&#20307;&#21462;&#21521;</span>
+np<span style="color:rgb(129, 161, 193)">.</span>save<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">"crystals.npy"</span><span style="color:rgb(129, 161, 193)">,</span> crystals<span style="color:rgb(129, 161, 193)">)</span></li><li>&#23450;&#20041;&#24212;&#21147;&#29366;&#24577;&#65306;<br /><span></span>python<br />Copy<br />stress_states <span style="color:rgb(129, 161, 193)">=</span> np<span style="color:rgb(129, 161, 193)">.</span>array<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(129, 161, 193)">[</span>
+    <span style="color:rgb(129, 161, 193)">[</span><span style="color:rgb(180, 142, 173)">1</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">]</span><span style="color:rgb(129, 161, 193)">,</span>  <span style="color:rgb(99, 111, 136)"># &#21333;&#21521;&#25289;&#20280;</span>
+    <span style="color:rgb(129, 161, 193)">[</span><span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">1</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">]</span><span style="color:rgb(129, 161, 193)">,</span>
+    <span style="color:rgb(129, 161, 193)">[</span><span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">1</span><span style="color:rgb(129, 161, 193)">]</span><span style="color:rgb(129, 161, 193)">,</span>
+    <span style="color:rgb(129, 161, 193)">[</span><span style="color:rgb(180, 142, 173)">1</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">1</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">]</span> <span style="color:rgb(129, 161, 193)">/</span> np<span style="color:rgb(129, 161, 193)">.</span>sqrt<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(180, 142, 173)">2</span><span style="color:rgb(129, 161, 193)">)</span><span style="color:rgb(129, 161, 193)">,</span>  <span style="color:rgb(99, 111, 136)"># &#21098;&#20999;</span>
+    <span style="color:rgb(99, 111, 136)"># &#26356;&#22810;&#24212;&#21147;&#29366;&#24577;...</span>
+<span style="color:rgb(129, 161, 193)">]</span><span style="color:rgb(129, 161, 193)">)</span>
+np<span style="color:rgb(129, 161, 193)">.</span>save<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">"stress_states.npy"</span><span style="color:rgb(129, 161, 193)">,</span> stress_states<span style="color:rgb(129, 161, 193)">)</span></li></ol><strong>CUDA&#31243;&#24207;</strong><ol style="color:rgb(64, 64, 64)"><li>&#32534;&#20889;CUDA&#26680;&#20989;&#25968;&#65288;kernel.cu&#65289;&#65306;<br /><span></span>cpp<br />Copy<br />__global__ <span style="color:rgb(129, 161, 193)">void</span> <span style="color:rgb(136, 192, 208)">calculateWork</span><span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(129, 161, 193)">float</span><span style="color:rgb(129, 161, 193)">*</span> crystals<span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(129, 161, 193)">float</span><span style="color:rgb(129, 161, 193)">*</span> stress<span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(129, 161, 193)">float</span><span style="color:rgb(129, 161, 193)">*</span> works<span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(129, 161, 193)">int</span> n<span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(129, 161, 193)">int</span> m<span style="color:rgb(129, 161, 193)">)</span> <span style="color:rgb(129, 161, 193)">{</span>
+    <span style="color:rgb(129, 161, 193)">int</span> idx <span style="color:rgb(129, 161, 193)">=</span> blockIdx<span style="color:rgb(129, 161, 193)">.</span>x <span style="color:rgb(129, 161, 193)">*</span> blockDim<span style="color:rgb(129, 161, 193)">.</span>x <span style="color:rgb(129, 161, 193)">+</span> threadIdx<span style="color:rgb(129, 161, 193)">.</span>x<span style="color:rgb(129, 161, 193)">;</span>
+    <span style="color:rgb(129, 161, 193)">if</span> <span style="color:rgb(129, 161, 193)">(</span>idx <span style="color:rgb(129, 161, 193)">&lt;</span> m<span style="color:rgb(129, 161, 193)">)</span> <span style="color:rgb(129, 161, 193)">{</span>
+        <span style="color:rgb(129, 161, 193)">float</span> max_work <span style="color:rgb(129, 161, 193)">=</span> <span style="color:rgb(180, 142, 173)">0.0f</span><span style="color:rgb(129, 161, 193)">;</span>
+        <span style="color:rgb(129, 161, 193)">for</span> <span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(129, 161, 193)">int</span> i <span style="color:rgb(129, 161, 193)">=</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">;</span> i <span style="color:rgb(129, 161, 193)">&lt;</span> n<span style="color:rgb(129, 161, 193)">;</span> i<span style="color:rgb(129, 161, 193)">++</span><span style="color:rgb(129, 161, 193)">)</span> <span style="color:rgb(129, 161, 193)">{</span>
+            <span style="color:rgb(129, 161, 193)">float</span> strain <span style="color:rgb(129, 161, 193)">=</span> <span style="color:rgb(136, 192, 208)">calculateStrain</span><span style="color:rgb(129, 161, 193)">(</span>crystals<span style="color:rgb(129, 161, 193)">,</span> stress<span style="color:rgb(129, 161, 193)">,</span> idx<span style="color:rgb(129, 161, 193)">,</span> i<span style="color:rgb(129, 161, 193)">)</span><span style="color:rgb(129, 161, 193)">;</span>
+            <span style="color:rgb(129, 161, 193)">float</span> work <span style="color:rgb(129, 161, 193)">=</span> <span style="color:rgb(136, 192, 208)">dotProduct</span><span style="color:rgb(129, 161, 193)">(</span>strain<span style="color:rgb(129, 161, 193)">,</span> stress<span style="color:rgb(129, 161, 193)">)</span><span style="color:rgb(129, 161, 193)">;</span>
+            <span style="color:rgb(129, 161, 193)">if</span> <span style="color:rgb(129, 161, 193)">(</span>work <span style="color:rgb(129, 161, 193)">&gt;</span> max_work<span style="color:rgb(129, 161, 193)">)</span> <span style="color:rgb(129, 161, 193)">{</span>
+                max_work <span style="color:rgb(129, 161, 193)">=</span> work<span style="color:rgb(129, 161, 193)">;</span>
+            <span style="color:rgb(129, 161, 193)">}</span>
+        <span style="color:rgb(129, 161, 193)">}</span>
+        works<span style="color:rgb(129, 161, 193)">[</span>idx<span style="color:rgb(129, 161, 193)">]</span> <span style="color:rgb(129, 161, 193)">=</span> max_work<span style="color:rgb(129, 161, 193)">;</span>
+    <span style="color:rgb(129, 161, 193)">}</span>
+<span style="color:rgb(129, 161, 193)">}</span></li><li>&#32534;&#35793;&#24182;&#36816;&#34892;CUDA&#31243;&#24207;&#65306;<br /><span></span>bash<br />Copy<br />nvcc <span style="color:rgb(129, 161, 193)">-o</span> calculate_work kernel.cu main.cpp
+./calculate_work</li></ol><strong>Python&#21518;&#22788;&#29702;</strong><ol style="color:rgb(64, 64, 64)"><li>&#35835;&#21462;&#35745;&#31639;&#32467;&#26524;&#24182;&#32472;&#21046;&#23624;&#26381;&#38754;&#65306;<br /><span></span>python<br />Copy<br /><span style="color:rgb(129, 161, 193)">import</span> numpy <span style="color:rgb(129, 161, 193)">as</span> np
+<span style="color:rgb(129, 161, 193)">import</span> matplotlib<span style="color:rgb(129, 161, 193)">.</span>pyplot <span style="color:rgb(129, 161, 193)">as</span> plt
+
+normalized_values <span style="color:rgb(129, 161, 193)">=</span> np<span style="color:rgb(129, 161, 193)">.</span>load<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">"normalized_values.npy"</span><span style="color:rgb(129, 161, 193)">)</span>
+stress_states <span style="color:rgb(129, 161, 193)">=</span> np<span style="color:rgb(129, 161, 193)">.</span>load<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">"stress_states.npy"</span><span style="color:rgb(129, 161, 193)">)</span>
+
+plt<span style="color:rgb(129, 161, 193)">.</span>figure<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(129, 161, 193)">)</span>
+plt<span style="color:rgb(129, 161, 193)">.</span>scatter<span style="color:rgb(129, 161, 193)">(</span>stress_states<span style="color:rgb(129, 161, 193)">[</span><span style="color:rgb(129, 161, 193)">:</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">0</span><span style="color:rgb(129, 161, 193)">]</span><span style="color:rgb(129, 161, 193)">,</span> stress_states<span style="color:rgb(129, 161, 193)">[</span><span style="color:rgb(129, 161, 193)">:</span><span style="color:rgb(129, 161, 193)">,</span> <span style="color:rgb(180, 142, 173)">1</span><span style="color:rgb(129, 161, 193)">]</span><span style="color:rgb(129, 161, 193)">,</span> c<span style="color:rgb(129, 161, 193)">=</span>normalized_values<span style="color:rgb(129, 161, 193)">,</span> cmap<span style="color:rgb(129, 161, 193)">=</span><span style="color:rgb(163, 190, 140)">'viridis'</span><span style="color:rgb(129, 161, 193)">)</span>
+plt<span style="color:rgb(129, 161, 193)">.</span>colorbar<span style="color:rgb(129, 161, 193)">(</span>label<span style="color:rgb(129, 161, 193)">=</span><span style="color:rgb(163, 190, 140)">'Normalized Work'</span><span style="color:rgb(129, 161, 193)">)</span>
+plt<span style="color:rgb(129, 161, 193)">.</span>xlabel<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">'Stress Component 1'</span><span style="color:rgb(129, 161, 193)">)</span>
+plt<span style="color:rgb(129, 161, 193)">.</span>ylabel<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">'Stress Component 2'</span><span style="color:rgb(129, 161, 193)">)</span>
+plt<span style="color:rgb(129, 161, 193)">.</span>title<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(163, 190, 140)">'Normalized Yield Surface'</span><span style="color:rgb(129, 161, 193)">)</span>
+plt<span style="color:rgb(129, 161, 193)">.</span>show<span style="color:rgb(129, 161, 193)">(</span><span style="color:rgb(129, 161, 193)">)</span></li></ol><br />6.&nbsp;<strong>&#24635;&#32467;</strong>&#36890;&#36807;&#32467;&#21512;CUDA&#32534;&#31243;&#12289;Python&#25968;&#25454;&#22788;&#29702;&#21644;&#21487;&#35270;&#21270;&#24037;&#20855;&#65292;&#21487;&#20197;&#22312;GPU&#19978;&#39640;&#25928;&#23454;&#29616;&#24212;&#21147;&#35825;&#23548;&#39532;&#27663;&#20307;&#30456;&#21464;&#30340;&#21151;&#35745;&#31639;&#65292;&#24182;&#32472;&#21046;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;&#12290;&#20855;&#20307;&#23454;&#29616;&#38656;&#35201;&#20197;&#19979;&#36164;&#28304;&#65306;<br /><span></span><ul style="color:rgb(64, 64, 64)"><li><strong>&#30828;&#20214;</strong>&#65306;&#25903;&#25345;CUDA&#30340;GPU&#12290;<br /><span></span></li><li><strong>&#36719;&#20214;</strong>&#65306;CUDA Toolkit&#12289;Python&#12289;Matplotlib&#12290;<br /><span></span></li><li><strong>&#25968;&#25454;</strong>&#65306;&#26230;&#20307;&#21462;&#21521;&#21644;&#24212;&#21147;&#29366;&#24577;&#25968;&#25454;&#12290;<br /><span></span></li></ul>&#22914;&#26524;&#20320;&#27809;&#26377;&#26412;&#22320;GPU&#35774;&#22791;&#65292;&#21487;&#20197;&#20351;&#29992;&#20113;&#24179;&#21488;&#65288;&#22914;AWS&#12289;Google Cloud&#65289;&#30340;GPU&#23454;&#20363;&#36827;&#34892;&#35745;&#31639;&#12290;<br /><span></span></div>
+
+<div class="wsite-spacer" style="height:50px;"></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<h2 class="wsite-content-title">ChatGPT</h2>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div><div style="height: 20px; overflow: hidden; width: 100%;"></div>
+<hr class="styled-hr" style="width:100%;"></hr>
+<div style="height: 20px; overflow: hidden; width: 100%;"></div></div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div class="paragraph">&#8203;&#20197;&#19979;&#26159;&#20855;&#20307;&#30340;&#24037;&#20316;&#27969;&#31243;&#21644;&#25152;&#38656;&#24037;&#20855;&#30340;&#35814;&#32454;&#24314;&#35758;&#65306;<br /><span></span><br /><strong>1. &#32534;&#31243;&#35821;&#35328;&#19982;&#24320;&#21457;&#29615;&#22659;</strong><ul><li><strong>&#32534;&#31243;&#35821;&#35328;:</strong> C/C++ &#32467;&#21512; CUDA&#65288;&#29992;&#20110; GPU &#32534;&#31243;&#65289;</li><li><strong>&#38598;&#25104;&#24320;&#21457;&#29615;&#22659; (IDE):</strong><ul><li><strong>NVIDIA Nsight Compute</strong> (&#25903;&#25345; CUDA &#24320;&#21457;&#19982;&#24615;&#33021;&#20998;&#26512;)</li><li><strong>Visual Studio (Windows)</strong></li><li><strong>CLion &#25110; VSCode (Linux &amp; macOS)</strong></li><li><strong>Jupyter Notebook + Numba &#24211;</strong>&#65288;Python &#23454;&#29616; CUDA &#26680;&#20989;&#25968;&#65289;</li></ul></li><li><strong>GPU &#21152;&#36895;&#24211;:</strong><ul><li>Thrust&#65288;&#29992;&#20110;&#24402;&#32422;&#35745;&#31639;&#31561;&#39640;&#24615;&#33021;&#25805;&#20316;&#65289;</li><li>cuBLAS&#65288;&#29992;&#20110;&#30697;&#38453;&#36816;&#31639;&#65289;</li></ul></li></ul><br /><strong>2. &#30828;&#20214;&#24314;&#35758;</strong><ul><li><strong>GPU &#35774;&#22791;</strong>:<ul><li>NVIDIA GPU (&#25512;&#33616;&#25903;&#25345; CUDA Compute Capability &ge; 7.0)</li><li>&#22914;&#65306;RTX 3060&#12289;A100&#12289;V100&#12289;Tesla &#31995;&#21015;</li></ul></li><li><strong>&#24037;&#20316;&#31449;&#24314;&#35758;:</strong><ul><li>CPU: Intel i7 &#25110; AMD Ryzen &#31995;&#21015;</li><li>&#20869;&#23384;: &ge; 32GB</li><li>OS: Ubuntu 20.04 &#25110; Windows 11 Pro</li><li>&#23384;&#20648;: SSD &ge; 1TB</li></ul></li></ul><br /><strong>3. &#26680;&#24515;&#35745;&#31639;&#27169;&#22359;</strong><ul><li><strong>&#23454;&#29616;&#26041;&#24335;:</strong><ul><li>&#20351;&#29992; CUDA &#26680;&#20989;&#25968;&#36827;&#34892;&#39532;&#27663;&#20307;&#21464;&#20307;&#21151;&#26368;&#22823;&#20540;&#30340;&#24182;&#34892;&#35745;&#31639;&#12290;</li><li>&#20351;&#29992; thrust::reduce &#23454;&#29616;&#24402;&#32422;&#27714;&#24179;&#22343;&#20540;&#12290;</li></ul></li><li><strong>&#25968;&#25454;&#21487;&#35270;&#21270;&#27169;&#22359;:</strong><ul><li>&#23558;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;&#32467;&#26524;&#20197; 2D/3D &#22270;&#24418;&#24418;&#24335;&#21487;&#35270;&#21270;&#12290;</li></ul></li></ul><br /><strong>4. &#25968;&#25454;&#20998;&#26512;&#19982;&#21487;&#35270;&#21270;&#24037;&#20855;</strong><ul><li><strong>Matplotlib/Plotly (Python)</strong>&#65306;&#29992;&#20110;&#32472;&#21046;&#23624;&#26381;&#38754;</li><li><strong>ParaView:</strong> &#39640;&#24615;&#33021;&#31185;&#23398;&#25968;&#25454;&#21487;&#35270;&#21270;&#24037;&#20855;</li><li><strong>Matlab:</strong> &#24037;&#31243;&#35745;&#31639;&#21644;&#23624;&#26381;&#38754;&#32472;&#22270;&#24037;&#20855;&#65288;&#20869;&#32622; GPU &#25903;&#25345;&#65289;</li><li><strong>Excel:</strong> &#31616;&#21333;&#34920;&#26684;&#20998;&#26512;</li></ul><br /><strong>5. &#27979;&#35797;&#19982;&#24615;&#33021;&#20998;&#26512;</strong><ul><li><strong>&#24615;&#33021;&#35843;&#20248;&#24037;&#20855;:</strong> NVIDIA Nsight&#12289;cuda-memcheck</li><li><strong>&#28014;&#28857;&#31934;&#24230;&#20248;&#21270;:</strong> &#32771;&#34385;&#20351;&#29992; __fmul_rn() &#31561;&#25351;&#20196;&#36827;&#34892;&#39640;&#31934;&#24230;&#20056;&#27861;&#35745;&#31639;</li></ul><br /><strong>6. &#32593;&#31449;&#19982;&#22312;&#32447;&#36164;&#28304;</strong><ul><li><strong>NVIDIA Developer:</strong> <a target="_new" href="https://developer.nvidia.com/">https://developer.nvidia.com</a><br />&#65288;&#33719;&#21462; CUDA Toolkit &#21644;&#24320;&#21457;&#25991;&#26723;&#65289;</li><li><strong>GitHub:</strong> &#20195;&#30721;&#31649;&#29702;&#19982;&#24320;&#28304;&#31639;&#27861;&#36164;&#28304;</li><li><strong>Kaggle/Google Colab:</strong> &#21487;&#22312; Colab Pro &#19978;&#21033;&#29992; NVIDIA T4 GPU &#27979;&#35797; CUDA Python &#31243;&#24207;</li><li><strong>Documentation:</strong> CUDA &#23448;&#26041;&#25991;&#26723;&#12289;C++ &#24182;&#34892;&#35745;&#31639;&#21442;&#32771;</li></ul><br /><strong>&#24037;&#20316;&#27969;&#31243;</strong><ol><li><strong>&#29615;&#22659;&#25645;&#24314;:</strong><br /><span></span><ul><li>&#23433;&#35013; CUDA Toolkit &#21644;&#24517;&#35201;&#24320;&#21457;&#24037;&#20855;</li><li>&#35774;&#32622; GPU &#39537;&#21160;&#31243;&#24207;&#21644;&#35843;&#35797;&#24037;&#20855;</li></ul></li><li><strong>&#25968;&#25454;&#20934;&#22791;:</strong><br /><span></span><ul><li>&#23450;&#20041;&#26230;&#20307;&#26041;&#21521;&#12289;&#24212;&#21147;&#21521;&#37327;&#31561;&#25968;&#25454;&#38598;</li><li>&#20351;&#29992; Python &#29983;&#25104;&#24212;&#21147;&#29366;&#24577;&#32593;&#26684;</li></ul></li><li><strong>CUDA &#26680;&#20989;&#25968;&#24320;&#21457;:</strong><br /><span></span><ul><li>&#23454;&#29616;&#24182;&#27979;&#35797;&#39532;&#27663;&#20307;&#21464;&#20307;&#21151;&#30340;&#26368;&#22823;&#20540;&#35745;&#31639;&#20989;&#25968;</li></ul></li><li><strong>&#24615;&#33021;&#20248;&#21270;:</strong><br /><span></span><ul><li>&#21033;&#29992; Nsight &#30417;&#27979; GPU &#35745;&#31639;&#24615;&#33021;</li></ul></li><li><strong>&#24402;&#19968;&#21270;&#20998;&#26512;&#19982;&#21487;&#35270;&#21270;:</strong><br /><span></span><ul><li>Python &#25110; Matlab &#32472;&#21046;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;</li></ul></li><li><strong>&#25253;&#21578;&#24635;&#32467;:</strong><br /><span></span><ul><li>&#35760;&#24405;&#35745;&#31639;&#32467;&#26524;&#19982;&#20998;&#26512;</li></ul></li></ol><br />&#36825;&#26679;&#37197;&#32622;&#21644;&#23454;&#29616;&#26041;&#26696;&#33021;&#22815;&#28085;&#30422;&#25968;&#25454;&#35745;&#31639;&#12289;&#24615;&#33021;&#20248;&#21270;&#12289;&#32467;&#26524;&#20998;&#26512;&#31561;&#20840;&#27969;&#31243;&#65292;&#21516;&#26102;&#21033;&#29992; GPU &#21152;&#36895;&#26469;&#22823;&#24133;&#25552;&#21319;&#24615;&#33021;&#12290;<br /><span></span></div>
+
+<div class="wsite-spacer" style="height:50px;"></div>
+
+<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
+	<table class="wsite-multicol-table">
+		<tbody class="wsite-multicol-tbody">
+			<tr class="wsite-multicol-tr">
+				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<h2 class="wsite-content-title">&#28165;&#35328;</h2>
+
+
+					
+				</td>				<td class="wsite-multicol-col" style="width:50%; padding:0 15px;">
+					
+						
+
+<div><div style="height: 20px; overflow: hidden; width: 100%;"></div>
+<hr class="styled-hr" style="width:100%;"></hr>
+<div style="height: 20px; overflow: hidden; width: 100%;"></div></div>
+
+
+					
+				</td>			</tr>
+		</tbody>
+	</table>
+</div></div></div>
+
+<div class="paragraph">&#20855;&#22791;&#20197;&#19979;&#26465;&#20214;&#65306;<br /><span></span><ol style="color:rgb(26, 32, 41)"><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#32534;&#31243;&#29615;&#22659;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">CUDA Toolkit</span>&#65306;&#20026;&#20102;&#32534;&#20889;&#21644;&#32534;&#35793;CUDA&#20195;&#30721;&#65292;&#20320;&#38656;&#35201;&#23433;&#35013;NVIDIA&#30340;CUDA Toolkit&#12290;&#36825;&#20010;&#24037;&#20855;&#21253;&#21253;&#21547;&#20102;&#24517;&#35201;&#30340;&#32534;&#35793;&#22120;&#12289;&#24211;&#21644;&#24037;&#20855;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">C++&#32534;&#35793;&#22120;</span>&#65306;&#22914;GCC&#25110;Clang&#65292;&#29992;&#20110;&#32534;&#35793;CUDA&#20195;&#30721;&#20013;&#30340;&#20027;&#26426;&#20195;&#30721;&#37096;&#20998;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#24320;&#21457;&#29615;&#22659;</span>&#65306;&#22914;Visual Studio&#12289;CLion&#12289;Eclipse&#31561;&#65292;&#29992;&#20110;&#32534;&#20889;&#21644;&#35843;&#35797;&#20195;&#30721;&#12290;</li></ul></li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#30828;&#20214;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">NVIDIA GPU</span>&#65306;&#33267;&#23569;&#38656;&#35201;&#19968;&#22359;&#25903;&#25345;CUDA&#30340;NVIDIA GPU&#65292;&#20197;&#36816;&#34892;CUDA&#20195;&#30721;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#35745;&#31639;&#26426;</span>&#65306;&#19968;&#21488;&#33021;&#22815;&#23433;&#35013;&#19978;&#36848;&#36719;&#20214;&#24182;&#36830;&#25509;&#21040;GPU&#30340;&#35745;&#31639;&#26426;&#12290;</li></ul></li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#36719;&#20214;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#25805;&#20316;&#31995;&#32479;</span>&#65306;&#25903;&#25345;CUDA&#30340;Linux&#12289;Windows&#25110;macOS&#25805;&#20316;&#31995;&#32479;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#39537;&#21160;&#31243;&#24207;</span>&#65306;&#23433;&#35013;&#19982;&#20320;&#30340;GPU&#20860;&#23481;&#30340;NVIDIA&#39537;&#21160;&#31243;&#24207;&#12290;</li></ul></li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#23398;&#20064;&#36164;&#28304;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">CUDA&#32534;&#31243;&#25351;&#21335;</span>&#65306;NVIDIA&#25552;&#20379;&#30340;&#23448;&#26041;&#25991;&#26723;&#65292;&#35814;&#32454;&#20171;&#32461;&#20102;CUDA&#32534;&#31243;&#30340;&#21508;&#20010;&#26041;&#38754;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#22312;&#32447;&#25945;&#31243;&#21644;&#35838;&#31243;</span>&#65306;&#22914;Coursera&#12289;Udemy&#31561;&#24179;&#21488;&#19978;&#30340;CUDA&#32534;&#31243;&#35838;&#31243;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#31038;&#21306;&#21644;&#35770;&#22363;</span>&#65306;&#22914;NVIDIA Developer Forums&#12289;Stack Overflow&#31561;&#65292;&#21487;&#20197;&#22312;&#36825;&#37324;&#23547;&#27714;&#24110;&#21161;&#21644;&#20132;&#27969;&#32463;&#39564;&#12290;</li></ul></li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#20195;&#30721;&#32534;&#36753;&#21644;&#35843;&#35797;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#20195;&#30721;&#32534;&#36753;&#22120;</span>&#65306;&#22914;Visual Studio Code&#12289;Sublime Text&#31561;&#65292;&#29992;&#20110;&#32534;&#20889;&#21644;&#32534;&#36753;&#20195;&#30721;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#35843;&#35797;&#24037;&#20855;</span>&#65306;&#22914;NVIDIA Nsight&#12289;gdb&#31561;&#65292;&#29992;&#20110;&#35843;&#35797;CUDA&#20195;&#30721;&#12290;</li></ul></li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#29256;&#26412;&#25511;&#21046;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">Git</span>&#65306;&#29992;&#20110;&#29256;&#26412;&#25511;&#21046;&#65292;&#21487;&#20197;&#24110;&#21161;&#20320;&#36319;&#36394;&#20195;&#30721;&#30340;&#21464;&#21270;&#21644;&#21327;&#20316;&#24320;&#21457;&#12290;</li></ul></li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#20854;&#20182;&#24037;&#20855;</span>&#65306;<br /><span></span><ul><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#24615;&#33021;&#20998;&#26512;&#24037;&#20855;</span>&#65306;&#22914;NVIDIA Nsight Compute&#12289;Nsight Systems&#31561;&#65292;&#29992;&#20110;&#20998;&#26512;&#21644;&#20248;&#21270;CUDA&#20195;&#30721;&#30340;&#24615;&#33021;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#25968;&#23398;&#24211;</span>&#65306;&#22914;cuBLAS&#12289;cuFFT&#31561;&#65292;&#29992;&#20110;&#21152;&#36895;&#25968;&#23398;&#36816;&#31639;&#12290;</li></ul></li></ol>&#35201;&#23454;&#29616;&#19978;&#36848;&#21151;&#33021;&#65292;&#20320;&#21487;&#20197;&#25353;&#29031;&#20197;&#19979;&#27493;&#39588;&#36827;&#34892;&#65306;<br /><span></span><ol style="color:rgb(26, 32, 41)"><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#23433;&#35013;CUDA Toolkit</span>&#65306;&#20174;NVIDIA&#23448;&#26041;&#32593;&#31449;&#19979;&#36733;&#24182;&#23433;&#35013;CUDA Toolkit&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#23433;&#35013;&#39537;&#21160;&#31243;&#24207;</span>&#65306;&#30830;&#20445;&#20320;&#30340;GPU&#39537;&#21160;&#31243;&#24207;&#26159;&#26368;&#26032;&#30340;&#65292;&#24182;&#19988;&#19982;CUDA Toolkit&#20860;&#23481;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#35774;&#32622;&#24320;&#21457;&#29615;&#22659;</span>&#65306;&#37197;&#32622;&#20320;&#30340;&#24320;&#21457;&#29615;&#22659;&#65292;&#30830;&#20445;&#33021;&#22815;&#32534;&#35793;&#21644;&#36816;&#34892;CUDA&#20195;&#30721;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#32534;&#20889;&#20195;&#30721;</span>&#65306;&#20351;&#29992;CUDA C++&#32534;&#20889;&#20320;&#30340;&#31243;&#24207;&#65292;&#23454;&#29616;&#24212;&#21147;&#29366;&#24577;&#19979;&#30340;&#26368;&#22823;&#21151;&#35745;&#31639;&#21644;&#24402;&#19968;&#21270;&#23624;&#26381;&#38754;&#30340;&#35745;&#31639;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#32534;&#35793;&#21644;&#36816;&#34892;</span>&#65306;&#20351;&#29992;CUDA&#32534;&#35793;&#22120;&#65288;&#22914;nvcc&#65289;&#32534;&#35793;&#20320;&#30340;&#20195;&#30721;&#65292;&#24182;&#22312;&#20320;&#30340;&#35745;&#31639;&#26426;&#19978;&#36816;&#34892;&#23427;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#35843;&#35797;&#21644;&#20248;&#21270;</span>&#65306;&#20351;&#29992;&#35843;&#35797;&#24037;&#20855;&#21644;&#24615;&#33021;&#20998;&#26512;&#24037;&#20855;&#26469;&#35843;&#35797;&#21644;&#20248;&#21270;&#20320;&#30340;&#20195;&#30721;&#12290;</li><li><span style="font-weight:var(--base-text-weight-semibold,600)">&#27979;&#35797;&#21644;&#39564;&#35777;</span>&#65306;&#27979;&#35797;&#20320;&#30340;&#31243;&#24207;&#65292;&#30830;&#20445;&#23427;&#33021;&#22815;&#27491;&#30830;&#22320;&#35745;&#31639;&#20986;&#39044;&#26399;&#30340;&#32467;&#26524;&#12290;</li></ol>&#35831;&#27880;&#24847;&#65292;&#36825;&#21482;&#26159;&#19968;&#20010;&#27010;&#36848;&#65292;&#23454;&#38469;&#25805;&#20316;&#20013;&#20320;&#21487;&#33021;&#38656;&#35201;&#26356;&#22810;&#30340;&#32454;&#33410;&#21644;&#27493;&#39588;&#12290;&#22914;&#26524;&#20320;&#26159;CUDA&#32534;&#31243;&#30340;&#26032;&#25163;&#65292;&#24314;&#35758;&#20174;&#31616;&#21333;&#30340;CUDA&#31034;&#20363;&#31243;&#24207;&#24320;&#22987;&#65292;&#36880;&#27493;&#23398;&#20064;&#21644;&#25484;&#25569;CUDA&#32534;&#31243;&#30340;&#25216;&#24039;&#12290;<br /><span></span></div>
+			</div>
+		</div>
+      </div>
+
+	</div>
+</div>
+
+</div>
+
+    </div><!-- end content-wrap -->
+
+    <div class="footer-wrap">
+      <div class="container">
+     		<div class="footer">
+
+<style type="text/css">
+	@font-face {
+		font-family: SQMarket-Medium;
+		font-style: normal;
+		font-weight: 500;
+		src:
+			url("http://cdn11.editmysite.com/fonts/SQ_Market/sqmarket-medium.woff2") format("woff2"),
+			url("http://cdn11.editmysite.com/fonts/SQ_Market/sqmarket-medium.woff") format("woff");
+	}
+</style>
+
+<div id="weebly-footer-signup-container-v3">
+	<a
+		href="https://www.weebly.com/signup?utm_source=internal&amp;utm_medium=footer"
+		target="_blank"
+		class="signup-container-header"
+		id="signup-link-href"
+	>
+		<div class="powered-by">
+			<div class="footer-published-ab-powered-by">
+				Powered by <span class="link weebly-icon"></span>
+				<img class="footer-ab-published-toast-image" src="../cdn11.editmysite.com/images/site/footer/footer-toast-published-image-1.png">
+				<span class="footer-ab-published-toast-text">Create your own unique website with customizable templates.</span>
+				<span class="footer-ab-published-toast-button-wrapper">
+					<button class="footer-published-ab-button">Get Started</button>
+				</span>
+			</div>
+		</div>
+	</a>
+</div>
+
+<script type="text/javascript" src="../cdn11.editmysite.com/js/site/footerSignup0277.js?buildTime=1783636521"></script>
+<script type="text/javascript">
+	if (document.readystate === 'complete') {
+		Weebly.footer.setupContainer('cdn11.editmysite.com', '1783636521');
+	} else {
+		document.addEventListener('DOMContentLoaded', function() {
+			Weebly.footer.setupContainer('cdn11.editmysite.com', '1783636521');
+		});
+	}
+</script>
+</div>
+      </div><!-- end container -->
+    </div><!-- end footer-wrap -->
+	</div>
+
+  <div class="nav mobile-nav"><ul class="wsite-menu-default">
+		<li id="pg449870466210439719" class="wsite-menu-item-wrap">
+			<a
+						href="index.html"
+				class="wsite-menu-item"
+				>
+				HOME
+			</a>
+			
+		</li>
+		<li id="pg849579319350263904" class="wsite-menu-item-wrap">
+			<a
+						href="shape-memory-materialstechnology.html"
+				class="wsite-menu-item"
+				>
+				SHAPE MEMORY MATERIALS/TECHNOLOGY
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-636778014248804638"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-alloys.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory alloys
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-284963986111842283"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-alloy-actuators.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory alloy actuators
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-666108034510102305"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="grains-and-deformation.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Grains and deformation
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-366181443154457709"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-suppliers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA suppliers
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-331834494721630963"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory polymers
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-478514787394009705"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermo-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermo-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-954354717460090066"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="heating-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Heating-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-588476759748868504"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermo-plastic-elastic-smp.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermo-plastic elastic SMP
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-634190776533565694"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="bodyroom-temperature-programmable.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Body/room temperature programmable
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-175600180855754956"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermoset-elastic-smp.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermoset elastic SMP
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-973281143736383059"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="bodyroom-temperature-programmable1.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Body/room temperature programmable
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-785305065765267823"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="tailoring-tg-of-polymers-via-alloying.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Tailoring Tg of polymers via alloying
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-798447994981628324"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="vitrimer.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Vitrimer
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-343798175539253577"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-printing-filaments.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D printing filaments
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-668913285814792942"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="show-time.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Show time
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-987130405377422055"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="body-temperature-programmable-elastic-shape-memory-materials-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Body-temperature programmable elastic  shape memory materials: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-264385475993067983"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cooling-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cooling-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-169201366263144092"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cooling-responsive-shape-memory-materials-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cooling-responsive shape memory materials: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-257468102639285427"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="chemo-responsive.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Chemo-responsive
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-671213331239259311"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electrospinning-fundametals.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electrospinning: fundametals
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-971105054282663045"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="natural-biopolymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Natural biopolymers
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-524357891349573879"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="water-responsive-sme-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Water-responsive SME: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-835695192983465369"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="hydrogel.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Hydrogel
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-889670495929504579"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="simulation-of-smp.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Simulation of SMP
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-231128199613346396"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-hybrids.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory hybrids
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-948720437995196998"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electro-activated-shape-memory-hybrid.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electro-activated shape memory hybrid
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-777106737389404397"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smhs-tailorable-properties.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMHs: tailorable properties
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-876459703611221563"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-hybrids-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory hybrids: a brief history
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-292241229946229685"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="triplemultiple-sme.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Triple/multiple SME
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-809827554673947105"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="reversibleshape-change-effect.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Reversible/shape change effect
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-156039188269901687"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="programming-conditions.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Programming conditions
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-627079661619783517"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temperature-memory-effect-in-dsc.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temperature memory effect in DSC
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-922363620841205688"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-2283331283.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling &#22833;&#31283;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-285983556570571219"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="constrained-recovery-of-2way-eva.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Constrained recovery of 2way EVA
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-126596885443227297"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-structures.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory structures
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-626983806567433552"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-composites.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory composites
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-448292600980290953"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="intro--refs.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Intro. & Refs.
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-987006278987596442"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sme-in-commercial-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SME in commercial polymers
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-560286944265042028"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smm-introduction-videos.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMM introduction videos
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-578285265970614228"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="pmma-acrylic.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			PMMA (acrylic)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg597181913359033971" class="wsite-menu-item-wrap">
+			<a
+						href="diy.html"
+				class="wsite-menu-item"
+				>
+				DIY
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-527596941676381330"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="laser-engraving-and-beyond.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Laser engraving and beyond
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-860153969420888811"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-step-by-step-to-protect-power-charge-cable-33258210462080530005324472550922836204452525223618.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY (step-by-step) to protect power charge cable &#33258;&#21046;&#20805;&#30005;&#32447;&#25509;&#22836;&#20445;&#25252;&#23618;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-944091623596158059"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-smp-screw-3325821046244182936635760245183474619997.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY SMP screw &#33258;&#21046;&#24418;&#29366;&#35760;&#24518;&#34746;&#19997;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-706753736962268368"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-shape-memory-foam-3325821046244182936635760245182802332501.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY shape memory foam &#33258;&#21046;&#24418;&#29366;&#35760;&#24518;&#28023;&#32501;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-820922335898507144"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="diy-shape-memory-shoes-33258210462441829366357602451838795.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY shape memory shoes &#33258;&#21046;&#24418;&#29366;&#35760;&#24518;&#38795;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-405238764391444203"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="modifying-superelastic-nitinol-36229243773822138043357602451821512373292591324615.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Modifying superelastic Nitinol &#36229;&#24377;&#38221;&#38043;&#35760;&#24518;&#21512;&#37329;&#25913;&#24615;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-742139220391223378"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="goggles.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Goggles
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-755639057884157425"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temple-tip-retainers-3052438236384502836938057.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temple Tip Retainers /&#30524;&#38236;&#38450;&#28369;&#38057;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-380636120858396871"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="nose-pads.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Nose pads
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-551975068671014496"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3078933014tpu26679216972104620316-25605252922796931243.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#30789;&#33014;+TPU&#26679;&#21697;&#21046;&#20316; &#25605;&#25292;&#27969;&#31243;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-384816627465424729"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="unlock-smart-phones.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Unlock smart phones
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg905477596168217794" class="wsite-menu-item-wrap">
+			<a
+						href="projects.html"
+				class="wsite-menu-item"
+				>
+				PROJECTS
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-304242588504655296"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="biomedical-applications-299832928921307301032421229992.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Biomedical applications &#29983;&#29289;&#21307;&#30103;&#24212;&#29992;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-883813194524576820"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="self-tightening-band-aid-332582591032553210192148736148.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Self-tightening band aid &#33258;&#25910;&#32553;&#21019;&#21487;&#36148;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-227417600699441394"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="self-tightening-staple-332582591032553251632641538025.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Self-tightening staple &#33258;&#25910;&#32553;&#25163;&#26415;&#38025;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-246241835835523591"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-plug-244182936635760245182664322622.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory plug &#24418;&#29366;&#35760;&#24518;&#26643;&#22622;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-430121251711814284"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="artificial-blood-vessels.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Artificial blood vessels
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-867925347295269103"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="comfort-fitting-33298368663614821512.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Comfort fitting &#33298;&#36866;&#36148;&#21512;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-168162378549856514"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-shoes-2441829366357602451838795.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape memory shoes &#24418;&#29366;&#35760;&#24518;&#38795;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-514931642674959454"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="wrist-ringsrings.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Wrist rings/rings
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-864091875704665279"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="mask2147532617.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Mask&#21475;&#32617;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-141425891586747902"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="masks.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			DIY&#21475;&#32617;&#25187;&#26494;&#32039;&#22120;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-979642921180142211"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="mask-holder-21475326172590326550.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Mask holder &#21475;&#32617;&#25903;&#26550;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-374329891937311787"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="improved-fitting.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Improved fitting
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-112111887739734774"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="comfort-fitting-invisible-mask-33298368663614821512ldquo3854424418rdquo2147532617.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Comfort fitting "invisible" mask &#33298;&#36866;&#36148;&#21512;&ldquo;&#38544;&#24418;&rdquo;&#21475;&#32617;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-936055033467548548"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="animation-mask.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Animation (mask)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-195227067897995665"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="facial-mask-3875433180.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Facial mask (&#38754;&#33180;)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-831426834629359780"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="retractable-214872591022238.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Retractable &#21487;&#25910;&#22238;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-351514075839875472"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="wrinkle-removal-3850030385.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Wrinkle removal &#38500;&#30385;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-420989349896421333"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-devices-2441829366357602451821512373292212020214.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA devices &#24418;&#29366;&#35760;&#24518;&#21512;&#37329;&#22120;&#20214;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-340130513783389091"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buttons-on-demand-25353386562535338062.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buttons-on-demand &#25353;&#38656;&#25353;&#38062;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-944873172711974997"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sunlight-activated-heat-engine-38451208093953721160303402890926426.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Sunlight activated heat engine &#38451;&#20809;&#39537;&#21160;&#30340;&#28909;&#26426;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-802335581616133982"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="adjustable-high-heel-2148735843396403631938795.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Adjustable high heel &#21487;&#35843;&#39640;&#36319;&#38795;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-787237745772087164"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-inchworm-244182936635760245182151237329395372116030340314813341034411.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA inchworm &#24418;&#29366;&#35760;&#24518;&#21512;&#37329;&#39537;&#21160;&#30340;&#31481;&#33410;&#34411;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-738299035489176652"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rolling-car-283782116036710.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rolling car &#28378;&#21160;&#36710;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-731667503319907328"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sma-springs.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMA springs
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-924567960309988257"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="gripper.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Gripper
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-377333952413216020"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smp-applications.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMP applications
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-581669761885172519"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="4d-latte-art-4d-2528933457.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			4D latte art 4D &#25289;&#33457;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-853353909168342763"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="spinning-4d-latte-art.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Spinning 4D latte art
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-974353445276797484"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="re-writable-braille-paper-214872279720889304502599132440.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Re-writable Braille paper &#21487;&#22797;&#20889;&#30450;&#25991;&#32440;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-265890106193466523"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="surface-patterning.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Surface patterning
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-303098827313748714"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2d-to-3d-switching.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			2D to 3D switching
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-654154230826564255"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="ear-impressionplugs.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Ear impression/plugs
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-994819428351833141"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="metalspolymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Metals/polymers
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-614593893216753202"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smart-manufacturing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Smart manufacturing
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-261959526802268474"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="powerless-cooling.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Powerless cooling
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-448620004911318707"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="self-healing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Self-healing
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-629950268110806877"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sensors-202562486322120.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Sensors &#20256;&#24863;&#22120;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-705488241139197509"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temperature-sensors-28201242302663131614.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temperature sensors &#28201;&#24230;&#26631;&#31614;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-712808546701391754"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="anti-counterfeit-labels-38450202662663131614.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Anti-counterfeit labels &#38450;&#20266;&#26631;&#31614;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-573402516754560501"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="vertical-gardening-22402304523251121270.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Vertical gardening &#22402;&#30452;&#32511;&#21270;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-588054799182210659"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3040626223.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#30406;&#26223;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-216119165178487149"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="in-singapore.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			In Singapore
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-634512522469466443"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="products-2013521697.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Products &#20135;&#21697;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-409412151854649899"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="event-sponsorship.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Event sponsorship
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-487999008753374962"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="projects-3903330446.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Projects &#39033;&#30446;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-551402185860307880"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="a-project-in-guangzhou-2022.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			A project in Guangzhou (2022)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-832702093763625066"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2nd-project-in-guangzhou.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			2nd Project in Guangzhou
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-681613229486593582"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3rd-project-in-singapore.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3rd Project in Singapore
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-521328682846956824"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="water-on-demand-irrigation-system.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Water on-demand irrigation system
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-653239302185951962"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="vertical-greening-panel-2nd-type.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Vertical greening panel (2nd  type)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-880902895719628915"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2nd-type-of-foam.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			2nd type of foam
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-443184929408436011"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="wearable-electronics-21487313592514030005233763577422791.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Wearable electronics &#21487;&#31359;&#25140;&#30005;&#23376;&#35774;&#22791;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-123713723555076966"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="controlled-foldingunfolding-214872551123637243202524021472.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Controlled folding/unfolding &#21487;&#25511;&#23637;&#24320;/&#25240;&#21472;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-803729650569336337"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="folding-multiple-layered.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Folding (multiple layered)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-564956297185976547"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="reshape--reprogram.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Reshape & reprogram
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-686763808145800170"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="active-disassembly-332582528621368.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Active disassembly &#33258;&#25286;&#21368;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-273148082873136511"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="morphing-wing-2146432764.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Morphing wing &#21464;&#32764;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-284547570604623005"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="magnetic-circuit-design.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Magnetic circuit design
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-374983956745212360"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="solid-state-uv-cross-linking.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Solid state UV cross-linking
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-223008639596616722"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="solid-state-heating-cross-linking.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Solid-state heating cross-linking
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-898488440914965671"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="additive-manufacturing22686264482104636896.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Additive manufacturing&#22686;&#26448;&#21046;&#36896;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-976272274955595130"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d4d-printing-2517121360.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D/4D printing &#25171;&#21360;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-757668363656147762"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-3d-printing-in-solid-state-245553689522266245773d2517121360.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid 3D printing in solid state &#24555;&#36895;&#22266;&#24577;3D&#25171;&#21360;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-809767352973135678"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-volumetric-additive-manufacturing-in-solid-state65306-hydrogels.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid volumetric additive manufacturing in solid-state&#65306; hydrogels
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-451489972979511148"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linkable-vitrimer-2022.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linkable vitrimer 2022
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-298954349555723963"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linking-of-solid-material.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linking of solid material
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-152510521756125101"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linking-machine.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linking machine
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-261103592859125077"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="solid-state-vam-3d.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Solid-state VAM (3D)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-116611698916113117"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="svam-a-brief-history.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SVAM:  A brief history
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-442196096157996920"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="review-of-solid-state-vam-by-ai.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Review of Solid state VAM by AI
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-168998303577389050"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="new-ways-of-additive-manufacturing-animation.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			New ways of additive manufacturing (animation)
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-656945244537326985"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-fdm-printer.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV-FDM printer
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-886900143600626948"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cooling-responsive-shape-memory-hydrogel-via-fdm.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cooling-responsive shape memory hydrogel via FDM
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-207493672265228394"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-fashion.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D fashion
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-982770733237387639"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="formation-of-3d-structures.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Formation of 3D structures
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-224480458647150380"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-capture.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape capture
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-252154092455758988"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="surface-capture.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Surface capture
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-868592342608232633"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="surface-pattern-for-structural-coloring.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Surface pattern for structural coloring
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg134836588838265829" class="wsite-menu-item-wrap">
+			<a
+						href="store-room.html"
+				class="wsite-menu-item"
+				>
+				Store room
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-858789820461719120"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="referencestools.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			References/tools
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-103320468445582043"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-models.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D models
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-825798297409183564"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="more-stl-models.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			More STL models
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-168503569214390405"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="2998332918.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#29983;&#32918;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-343343108737566313"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-printing-service.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D printing service
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-106713231755067078"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="sample-dimensions-for-tensile-test.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Sample dimensions for tensile test
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-752984144632456828"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="temperature-calibration.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Temperature calibration
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-256078296244145410"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="toolbox240372085531665.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Toolbox&#24037;&#20855;&#31665;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-610722641630624900"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="toolbox-ii-240372085531665-ii.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Toolbox II (&#24037;&#20855;&#31665; II)
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-799631477237907999"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="jungle.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Jungle
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-491333550721590998"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="about-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			About polymers
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-974986216718016368"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermally-reversible-solid-liquid-transition.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermally reversible solid-liquid transition
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-570509880120857551"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cyclic-loading.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cyclic loading
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-186240065405896186"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="mullins-effect.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Mullins effect
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-992214292838354314"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="photoelsticity-2080924377.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Photoelsticity &#20809;&#24377;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-524048230442851036"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shear-thickening-21098209992268624378.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shear-thickening &#21098;&#20999;&#22686;&#24378;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-538933236151395833"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="4-cna.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			4 CNA
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-835102489806517515"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="closed-to-open-cell-foams.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Closed to open cell foams
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-973039087337601937"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="laser-induced-graphene.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Laser induced graphene
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-712216776322434672"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electrospinning.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electrospinning
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-985282461424143214"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="nano-imprinting.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Nano imprinting
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-670735740458364718"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="gel-2095733014.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Gel &#20957;&#33014;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-491747867963333280"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="instability-in-wetting-of-hydrogel.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Instability in wetting of hydrogel
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-954479974603325264"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="electroactive-gel3000527963246152095733014.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Electroactive gel&#30005;&#27963;&#24615;&#20957;&#33014;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-795106927514728668"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="cellulose-324203250032032.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Cellulose &#32420;&#32500;&#32032;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-226836923179139426"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="plastic-bottle-226092600929942.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Plastic bottle &#22609;&#26009;&#29942;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-419674373233591697"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="polymer-recycling.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Polymer recycling
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-989388896466067076"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-swelling-24555368952834232960.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid swelling &#24555;&#36895;&#28342;&#32960;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-883895016381569950"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="rapid-hardening-in-water.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Rapid hardening in water
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-272835629534772539"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="patterns.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Patterns
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-313081855536692197"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="brittle-ductile-transition.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Brittle-ductile transition
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-437702495940520658"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="tan-delta.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Tan delta
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-791359333861988292"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="re-programmable-tan-delta.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Re-programmable Tan delta
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-151824619440743355"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="uv-cross-linking.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			UV cross-linking
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-377560900382998885"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="hardening-speed.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Hardening speed
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-269974038883525086"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="coloring-2146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Coloring &#21464;&#33394;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-470341691571458044"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="structural-coloring-atop-curved-surfaces.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Structural coloring atop curved surfaces
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-974113225158396504"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="thermochromic-28909332682146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Thermochromic &#28909;&#33268;&#21464;&#33394;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-996646054692657488"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="photochromic-20809332682146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Photochromic &#20809;&#33268;&#21464;&#33394;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-353021230639483746"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="stress-induced-color-change21147332682146433394.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Stress induced color change&#21147;&#33268;&#21464;&#33394;
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-796083894786788998"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="patterned-coloring-via-stretching-25289209863339424425.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Patterned coloring via stretching &#25289;&#20986;&#33394;&#24425;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-258062261902137342"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="moire-interference-33707235722417828041.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Moire interference &#33707;&#23572;&#24178;&#28041;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-511338014904344457"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="lenticular-lens.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Lenticular lens
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-503973700143411117"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="transformation-front.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Transformation front
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-486212339431175107"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="contact-angle-vs-surface-pattern.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Contact angle vs surface pattern
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-988006596135966298"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="laser-applications.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Laser: applications
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-842070465693894657"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="insects-2611834411.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Insects &#26118;&#34411;
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-122402754704192755"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="structural-engineer.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Structural engineer
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-741707537175889897"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="static-and-dynamic-balancing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Static and Dynamic Balancing
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-909662343258871823"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="introduction-videos.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Introduction videos
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-392200249300363352"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="bistable-structures-a-case-study.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Bistable structures: a case study
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-916962112288326183"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="3d-printing-of-bistable-structures.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			3D printing of bistable structures
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-650731246618286502"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="step-wise-morphing.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Step-wise morphing
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-913064827673443671"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="yield-criterion.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Yield criterion
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-142005085690353108"
+	class="wsite-menu-subitem-wrap wsite-nav-current"
+	>
+	<a
+				href="normalized-yield-surface-via-gpu.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Normalized yield surface via GPU
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-408053281155710808"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="yield-surface-of-smas-and-beyond.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Yield surface of SMAs and beyond
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-210862578101799006"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-of-embedded-threads.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling of embedded threads
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-914069112181455939"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-of-embedded-strip.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling of embedded strip
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-775575235398015480"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="buckling-of-strip-atop-soft-substrate.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Buckling of strip atop soft substrate
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-607750002340038244"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="foam-structures-for-packaging.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Foam structures for packaging
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-650064103911872925"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="interesting.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Interesting
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-592729747590805459"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="exhibition.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Exhibition
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-461168690834514631"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="ideas.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Ideas
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-814268793491774951"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="experimental.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Experimental
+		</span><span class="wsite-menu-arrow">&gt;</span>
+	</a>
+	<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-882976523997023183"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="tensile-test.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Tensile test
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-264844369237853093"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="differential-scanning-calorimetry-dsc-procedure.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Differential Scanning Calorimetry (DSC) Procedure
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-568601293937157987"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="dynamic-mechanical-analysis-dma-procedure.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Dynamic Mechanical Analysis (DMA) Procedure
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-245804282436636780"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="shape-memory-performance-characterization-procedure-for-shape-memory-polymers.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Shape Memory Performance Characterization Procedure for Shape Memory Polymers
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+<li id="wsite-nav-213179220569011600"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="chatgpt-4-fun.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			ChatGPT 4 fun
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-755865658708699279"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="26234358892797935797.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			&#26234;&#35889;&#27979;&#35797;
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+</li>
+
+	</ul>
+</div>
+
+		</li>
+		<li id="pg900093232758959107" class="wsite-menu-item-wrap">
+			<a
+						href="contact.html"
+				class="wsite-menu-item"
+				>
+				Contact
+			</a>
+			<div class="wsite-menu-wrap" style="display:none">
+	<ul class="wsite-menu">
+		<li id="wsite-nav-590797855308385995"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="smm-course.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			SMM course
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-680749485510310162"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="representative-publications.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Representative publications
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-818781976891300342"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="projects-of-undergraduate-students.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Projects of undergraduate students
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-342823459871987752"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="list-of-videos.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			List of videos
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-474937000648180370"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="special-issues-conferences.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Special issues| Conferences
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-761016290835088930"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="companies.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			Companies
+		</span>
+	</a>
+	
+</li>
+<li id="wsite-nav-185694089759685491"
+	class="wsite-menu-subitem-wrap "
+	>
+	<a
+				href="references.html"
+		class="wsite-menu-subitem"
+		>
+		<span class="wsite-menu-title">
+			References
+		</span>
+	</a>
+	
+</li>
+
+	</ul>
+</div>
+
+		</li>
+</ul>
+</div>
+
+  <script type="text/javascript" src="files/theme/plugins89df.js?1556830342"></script>
+  <script type="text/javascript" src="files/theme/custom89df.js?1556830342"></script>
+    <div id="customer-accounts-app"></div>
+    <script src="../cdn2.editmysite.com/js/site/main-customer-accounts-sited746.js?buildtime=1782335418"></script>
+
+		<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-7870337-1']);
+	_gaq.push(['_setDomainName', 'none']);
+	_gaq.push(['_setAllowLinker', true]);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		// NOTE: keep the [1] if you replace this code. Otherwise cookie banner scripts won't be first on the page
+		var s = document.getElementsByTagName('script')[1]; s.parentNode.insertBefore(ga, s);
+	})();
+
+	_W.Analytics = _W.Analytics || {'trackers': {}};
+	_W.Analytics.trackers.wGA = '_gaq';
+</script>
+
+<script type="text/javascript" async=1>
+	// NOTE: keep the getElementsByTagName(o)**[1]** if you replace this code. Otherwise cookie banner scripts won't be first on the page
+	;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
+			p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
+			};p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[1];n.async=1;
+			n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,'script','../cdn3.editmysite.com/app/website/static/js/wsnbn/snowday262.js','snowday'));
+
+	var r = [99, 104, 101, 99, 107, 111, 117, 116, 46, 40, 119, 101, 101, 98, 108, 121, 124, 101, 100, 105, 116, 109, 121, 115, 105, 116, 101, 41, 46, 99, 111, 109];
+	var snPlObR = function(arr) {
+		var s = '';
+		for (var i = 0 ; i < arr.length ; i++){
+			s = s + String.fromCharCode(arr[i]);
+		}
+		return s;
+	};
+	var s = snPlObR(r);
+
+	var regEx = new RegExp(s);
+
+	_W.Analytics = _W.Analytics || {'trackers': {}};
+	_W.Analytics.trackers.wSP = 'snowday';
+	_W.Analytics.user_id = '132868807';
+	_W.Analytics.site_id = '197915658873313714';
+
+
+	(function(app_id, ec_hostname, discover_root_domain) {
+		var track = window[_W.Analytics.trackers.wSP];
+		if (!track) return;
+		track('newTracker', app_id, ec_hostname, {
+			appId: app_id,
+			post: true,
+			platform: 'web',
+			discoverRootDomain: discover_root_domain,
+			cookieName: '_snow_',
+			contexts: {
+				webPage: true,
+				performanceTiming: true,
+				gaCookies: true
+			},
+			crossDomainLinker: function (linkElement) {
+				return regEx.test(linkElement.href);
+			},
+			respectDoNotTrack: true
+		});
+		track('trackPageView', _W.Analytics.user_id+':'+_W.Analytics.site_id, _W.Analytics.spContexts);
+		track('crossDomainLinker', function (linkElement) {
+			return regEx.test(linkElement.href);
+		});
+	})(
+		'_wn',
+		'ec.editmysite.com',
+		false
+	);
+</script>
+
+
+
+
+
+<script>
+	(function(jQuery) {
+		try {
+			if (jQuery) {
+				jQuery('div.blog-social div.fb-like').attr('class', 'blog-social-item blog-fb-like');
+				var $commentFrame = jQuery('#commentArea iframe');
+				if ($commentFrame.length > 0) {
+					var frameHeight = jQuery($commentFrame[0].contentWindow.document).height() + 50;
+					$commentFrame.css('min-height', frameHeight + 'px');
+				}
+				if (jQuery('.product-button').length > 0){
+					jQuery(document).ready(function(){
+						jQuery('.product-button').parent().each(function(index, product){
+							if(jQuery(product).attr('target') == 'paypal'){
+								if (!jQuery(product).find('> [name="bn"]').length){
+									jQuery('<input>').attr({
+										type: 'hidden',
+										name: 'bn',
+										value: 'DragAndDropBuil_SP_EC'
+									}).appendTo(product);
+								}
+							}
+						});
+					});
+				}
+			}
+			else {
+				// Prototype
+				$$('div.blog-social div.fb-like').each(function(div) {
+					div.className = 'blog-social-item blog-fb-like';
+				});
+				$$('#commentArea iframe').each(function(iframe) {
+					iframe.style.minHeight = '410px';
+				});
+			}
+		}
+		catch(ex) {}
+	})(window._W && _W.jQuery);
+</script>
+
+<script>
+	window._W.isEUUser = false;
+	window._W.showCookieToAll = "";
+</script>
+
+<script>
+	(function(jQuery) {
+		try {
+			function forceShowCcLinks() {
+				var ccLinks = document.querySelector('.cc_links');
+				if (!ccLinks) {
+					return;
+				}
+
+				var ccLinksVisible = jQuery(ccLinks).is(':visible');
+				if (ccLinksVisible) {
+					return;
+				}
+
+
+				ccLinks.style.display = 'block';
+
+				var ccParent = ccLinks.parentElement;
+
+				var ccParentVisible = jQuery(ccParent).is(':visible');
+				if (ccParentVisible) {
+					return;
+				}
+
+				ccParent.style.display = 'block';
+
+				var ccGrandparent = ccParent.parentElement;
+				var ccGrandparentVisible = jQuery(ccGrandparent).is(':visible');
+				if (ccGrandparentVisible) {
+					return;
+				}
+				ccGrandparent.style.display = 'block';
+
+			}
+
+			function forceShowCcLinksForever() {
+				var tenSeconds = 10000;
+				forceShowCcLinks();
+				setTimeout(forceShowCcLinksForever, tenSeconds);
+			}
+
+			jQuery(document).ready(forceShowCcLinksForever);
+		}
+		catch(ex) {}
+	})(window._W && _W.jQuery);
+</script>
+
+
+	</body>
+
+<!-- Mirrored from smartmatertech.weebly.com/normalized-yield-surface-via-gpu.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Jul 2026 19:08:49 GMT -->
+</html>

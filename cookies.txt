@@ -1,0 +1,7 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+smartmatertech.weebly.com	TRUE	/	FALSE	1999999999	__cf_bm	4QaukzitDk16cyKaCzyJfLStObXnagC.sDg7OD56UEw-1784055621.9838037-1.0.1.1-UuT4uq9zBzeOAPVgFSxPo2Z9.ufKRhcxmbAkf0KR0ukAvfn0r6euPTvkFxsPuRHKUlDd1kNzXtzpS3yGmIbCz7IgBkmD7NUehcV3iV42QmANr2zGhrSksTXfA7EFmKph
+weebly.com	TRUE	/	FALSE	1999999999	sto-id-editor	FBGOBNAK
+smartmatertech.weebly.com	TRUE	/	FALSE	1999999999	__cf_bm	xnLjROeNlWJb0MuRWZMKAXIzqbq1hl4i3bUtcihdvyk-1784055843.730439-1.0.1.1-lCAdBtmDtwJPS547sDEeV4W4XV8O0ZVcwhRSgUQ60x1LSDuy0fmr0PmLZMKjstipvhjXu_3Z9G0WbNoXy7HwQm60XFsMMxnhuja2T7uLj8ZoSVZ9t2OIuaM.yahRDN.I
+weebly.com	TRUE	/	FALSE	1999999999	SameSite	None
+
