@@ -2,19 +2,20 @@ import os
 
 folder_path = "."
 
-def inject_security_meta(content):
-    # 核心：只注入这一行全局高级引荐来源凭证（彻底绕过浏览器的跨域 JS 拦截限制，解决 153 报错）
-    referrer_meta = '<meta name="referrer" content="strict-origin-when-cross-origin">'
+def force_https_upgrade(content):
+    # 核心：直接在全站把不安全的 http://www.youtube.com 替换为安全的 https://youtube.com
+    # 这样可以一键解除浏览器的 JavaScript 跨域拦截限制
+    wrong_http = 'src="http://www.youtube.com/embed/'
+    correct_https = 'src="https://youtube.com/embed/'
     
-    # 如果网页里没有这句话，且有 <head> 标签，就把它塞进去
-    if 'name="referrer"' not in content and '<head>' in content:
-        content = content.replace('<head>', f'<head>\n    {referrer_meta}')
+    if wrong_http in content:
+        content = content.replace(wrong_http, correct_https)
         
     return content
 
 if __name__ == "__main__":
     modified_count = 0
-    print("🚀 正在为全站原始网页一键注入安全越狱通行证...")
+    print("🔒 正在对全站未显示的视频进行一键 HTTPS 安全协议升级...")
     
     for root, dirs, files in os.walk(folder_path):
         for file in files:
@@ -24,12 +25,12 @@ if __name__ == "__main__":
                 with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                     old_content = f.read()
                 
-                new_content = inject_security_meta(old_content)
+                new_content = force_https_upgrade(old_content)
                 
                 if old_content != new_content:
                     with open(file_path, 'w', encoding='utf-8') as f:
                         f.write(new_content)
-                    print(f"🔒 安全越狱成功: {file}")
+                    print(f"🔒 协议升级成功: {file}")
                     modified_count += 1
                     
-    print(f"\n✨ 注入完毕！共为 {modified_count} 个网页升级了安全策略。")
+    print(f"\n✨ 升级完毕！共安全复活了 {modified_count} 个网页文件的视频。")
