@@ -1,46 +1,43 @@
 import os
 import re
 
-TARGET_DIR = '.'
+folder_path = "."
 
-# 100% 正确的标准自适应播放器 HTML
-new_html = (
-    f'<div class="video-container" style="position:relative; padding-bottom:56.25%; padding-top:30px; height:0; overflow:hidden; max-width:800px; margin:10px auto;">'
-    f'<iframe src="https://youtube.com" '
-    f'style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;" '
-    f'allowfullscreen="true"></iframe>'
-    f'</div>'
-)
+def auto_patch_html_file(content):
+    # 1. 精确抓取原始 watch?v= 链接并转换为标准的无 Cookie 增强隐私嵌入链接
+    # 使用 youtube-nocookie.com 可以极大程度避免由于用户端 Cookie 导致的播放器初始化失败
+    pattern_youtube = r'(?:https?:)?\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(?:[^\s"\'>]*)'
+    replacement_youtube = r'https://www.youtube-nocookie.com/embed/\1?wmode=opaque'
+    content = re.sub(pattern_youtube, replacement_youtube, content)
+    
+    # 2. 全局注入安全来源凭证（Meta 标签策略）
+    # 检查网页头部是否已经有引荐策略，如果没有，就在 <head> 标签最前方插入
+    referrer_meta = '<meta name="referrer" content="strict-origin-when-cross-origin">'
+    
+    if 'name="referrer"' not in content and '<head>' in content:
+        # 直接把安全 Meta 标签注入到 <head> 的正下方，对整个页面的所有视频全局生效
+        content = content.replace('<head>', f'<head>\n    {referrer_meta}')
+        
+    return content
 
 if __name__ == "__main__":
-    print("🚀 正在自动搜索顽固页面 3d-printing-of-bistable-structures.html ...")
-    found = False
+    modified_count = 0
+    print("🚀 正在对全站几百条视频启动一键批量安全越狱及格式修复...")
     
-    for root, _, files in os.walk(TARGET_DIR):
+    for root, dirs, files in os.walk(folder_path):
         for file in files:
-            # 模糊匹配文件名，不管它在哪个子文件夹，不管路径斜杠是 / 还是 \
-            if '3d-printing-of-bistable-structures' in file.lower() and file.endswith('.html'):
+            if file.endswith('.html'):
                 file_path = os.path.join(root, file)
-                found = True
                 
                 with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                    html_content = f.read()
+                    old_content = f.read()
                 
-                # 强力刮除旧的破损模块
-                if 'wsite-youtube' in html_content:
-                    fixed_content = re.sub(r'<div[^>]*?class="[^"]*?wsite-youtube[^"]*?".*?</div>', new_html, html_content, flags=re.DOTALL | re.IGNORECASE)
-                else:
-                    # 兜底直接强修被污染的链接字符串
-                    fixed_content = html_content.replace('src="https://www."', 'src="https://youtube.com"')
-                    fixed_content = fixed_content.replace('src="//www."', 'src="https://youtube.com"')
+                new_content = auto_patch_html_file(old_content)
                 
-                with open(file_path, 'w', encoding='utf-8') as f:
-                    f.write(fixed_content)
+                if old_content != new_content:
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(new_content)
+                    print(f"✅ 全局注入并修复成功: {file}")
+                    modified_count += 1
                     
-                print(f"🎯 成功定位并强制清洗了该网页: {file_path}")
-                break
-                
-    if not found:
-        print("❌ 依然没有在所有文件夹中找到包含该名字的 HTML 文件，请确认网页文件名是否正确。")
-    else:
-        print("🏁 特效药注射完毕！请刷新浏览器页面检查。")
+    print(f"\n✨ 批量大清洗完成！已为 {modified_count} 个网页注入全局授权凭证。")
